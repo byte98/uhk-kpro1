@@ -1,0 +1,280 @@
+/*
+ * Copyright (C) 2021 Jiri Skoda <skodaji1@uhk.cz>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+package cz.uhk.fim.skodaji1.kpro1.jticket.data;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Class representing system configuration
+ * @author Jiri Skoda <skodaji1@uhk.cz>
+ */
+public class Configuration
+{
+    /**
+     * Instance of configuration class which will be instanced only once
+     */
+    private static Configuration instance = null;
+    
+    /**
+     * Path to file which contains configuration
+     */
+    private String filePath;
+    
+    /**
+     * Path to file which contains background of tickets
+     */
+    public String ticketBackground;
+    
+    /**
+     * Path to directory to which will be all tickets printed
+     */
+    public String outputDirectory;
+    
+    /**
+     * Mode of user interface
+     */
+    public UIMode uiMode;
+    
+    /**
+     * Creates new system configuration
+     * @param filePath Path to file with configuration
+     */
+    private Configuration(String filePath)
+    {
+        this.filePath = filePath;
+        this.loadFromFile();
+    }
+    
+    /**
+     * Saves configuration to file
+     */
+    public void saveToFile()
+    {
+        FileWriter writer = null;
+        try
+        {
+            // First, read old lines
+            List<String> oldLines = new ArrayList<String>();
+            FileInputStream fstream = null;
+            try
+            {
+                fstream = new FileInputStream(this.filePath);
+                BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+                String strLine;
+                while ((strLine = br.readLine()) != null)
+                {
+                    oldLines.add(strLine);
+                }
+                fstream.close();
+            }
+            catch (FileNotFoundException ex)
+            {
+                Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            finally
+            {
+                try
+                {
+                    fstream.close();
+                }
+                catch (IOException ex)
+                {
+                    Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            // Then, change content to new one
+            List<String> newLines = new ArrayList<>();
+            List<String> toSave = new ArrayList<>();
+            toSave.add("TICKET_BACKGROUND");
+            toSave.add("TICKET_DIRECTORY");
+            toSave.add("UI_MODE");
+            for(String line: oldLines)
+            {
+                boolean added = false;
+                // Check, if is not already saved
+                for (String val: toSave)
+                {
+                    if (line.toUpperCase().startsWith(val))
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(val);
+                        sb.append("=");
+                        switch(val)
+                        {
+                            case "TICKET_BACKGROUND": sb.append(this.ticketBackground); break;
+                            case "TICKET_DIRECTORY" : sb.append(this.outputDirectory);  break;
+                            case "UI_MODE"          : switch(this.uiMode)
+                            {
+                                case TEXT: sb.append("TEXT");         break;
+                                case GRAPHICS: sb.append("GRAPHICS"); break;
+                            }
+                        }
+                        newLines.add(sb.toString());
+                        added = true;
+                        toSave.remove(val);
+                        break;
+                    }
+                }
+                if (added == false)
+                {
+                    newLines.add(line);
+                }
+            }
+            if (toSave.size() > 0)
+            {
+                for(String val: toSave)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(val);
+                    sb.append("=");
+                    switch(val)
+                    {
+                        case "TICKET_BACKGROUND": sb.append(this.ticketBackground); break;
+                        case "TICKET_DIRECTORY" : sb.append(this.outputDirectory);  break;
+                        case "UI_MODE"          : switch(this.uiMode)
+                        {
+                            case TEXT: sb.append("TEXT");         break;
+                            case GRAPHICS: sb.append("GRAPHICS"); break;
+                        }
+                    }
+                    newLines.add(sb.toString());
+                }
+            }
+            // At the end, write output to file
+            writer = new FileWriter(this.filePath);
+            for(String str: newLines)
+            {
+                writer.write(str + System.lineSeparator());
+            }
+            writer.close();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            try
+            {
+                writer.close();
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    /**
+     * Loads configuration from file
+     */
+    private void loadFromFile()
+    {
+        // Read configuration from file
+        Map<String, String> fileContent = this.readLines();
+        this.outputDirectory = fileContent.get("TICKET_DIRECTORY");
+        this.ticketBackground = fileContent.get("TICKET_BACKGROUND");
+        if (fileContent.get("UI_MODE") != null)
+        {
+            switch(fileContent.get("UI_MODE").toUpperCase())
+            {
+                case "TEXT": this.uiMode = UIMode.TEXT; break;
+                case "GRAPHICS": this.uiMode = UIMode.GRAPHICS; break;
+                default: this.uiMode = UIMode.TEXT; break;
+            }
+        }
+        else
+        {
+            this.uiMode = UIMode.TEXT;
+        }
+    }
+    
+    /**
+     * Gets instance of configuration class
+     * @param filePath Path to file with configuration
+     * @return Instance of configuration class
+     */
+    public static Configuration getInstance(String filePath)
+    {
+        if (Configuration.instance == null)
+        {
+            Configuration.instance = new Configuration(filePath);
+        }
+        return Configuration.instance;
+    }
+    
+    /**
+     * Reads configuration file
+     * @return Lines with data from configuration file
+     */
+    private Map<String, String> readLines()
+    {
+        Map<String, String> reti = new HashMap<>();
+        FileInputStream fstream = null;
+        try
+        {
+            fstream = new FileInputStream(this.filePath);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String strLine;
+            while ((strLine = br.readLine()) != null)
+            {
+                String[] parts = strLine.split("=");
+                if (parts.length == 2 && parts[0].startsWith("#") == false)
+                {
+                    reti.put(parts[0], parts[1]);
+                }
+            }
+            fstream.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            try
+            {
+                fstream.close();
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, ex, null);
+            }
+        }
+        return reti;
+    }
+}
