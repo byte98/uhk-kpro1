@@ -57,6 +57,11 @@ public class Configuration
     public String outputDirectory;
     
     /**
+     * Path to file which contains template of ticket
+     */
+    public String ticketTemplate;
+    
+    /**
      * Mode of user interface
      */
     public UIMode uiMode;
@@ -118,6 +123,7 @@ public class Configuration
             toSave.add("TICKET_BACKGROUND");
             toSave.add("TICKET_DIRECTORY");
             toSave.add("UI_MODE");
+            toSave.add("TICKET_TEMPLATE");
             for(String line: oldLines)
             {
                 boolean added = false;
@@ -133,6 +139,7 @@ public class Configuration
                         {
                             case "TICKET_BACKGROUND": sb.append(this.ticketBackground); break;
                             case "TICKET_DIRECTORY" : sb.append(this.outputDirectory);  break;
+                            case "TICKET_TEMPLATE"  : sb.append(this.ticketTemplate);   break;
                             case "UI_MODE"          : switch(this.uiMode)
                             {
                                 case TEXT: sb.append("TEXT");         break;
@@ -161,6 +168,7 @@ public class Configuration
                     {
                         case "TICKET_BACKGROUND": sb.append(this.ticketBackground); break;
                         case "TICKET_DIRECTORY" : sb.append(this.outputDirectory);  break;
+                        case "TICKET_TEMPLATE"  : sb.append(this.ticketTemplate);   break;
                         case "UI_MODE"          : switch(this.uiMode)
                         {
                             case TEXT: sb.append("TEXT");         break;
@@ -204,6 +212,7 @@ public class Configuration
         Map<String, String> fileContent = this.readLines();
         this.outputDirectory = fileContent.get("TICKET_DIRECTORY");
         this.ticketBackground = fileContent.get("TICKET_BACKGROUND");
+        this.ticketTemplate = fileContent.get("TICKET_TEMPLATE");
         if (fileContent.get("UI_MODE") != null)
         {
             switch(fileContent.get("UI_MODE").toUpperCase())

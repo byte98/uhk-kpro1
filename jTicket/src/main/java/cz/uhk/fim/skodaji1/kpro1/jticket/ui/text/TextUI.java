@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,12 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.HelpWindow;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.MainWindow;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  * Class representing textual user interface
@@ -31,16 +36,32 @@ public class TextUI implements IUserInterface
      */
     private TextUIMainWindow mainWindow;
     
+    /**
+     * Window with help
+     */
+    private TextUIHelpWindow helpWindow;
+    
     @Override
     public void prepare()
     {
         this.mainWindow = new TextUIMainWindow();
+        this.mainWindow.pack();
+        
+        this.helpWindow = new TextUIHelpWindow();
+        this.helpWindow.pack();
     }
 
     @Override
     public void start()
     {
-        this.mainWindow.setVisible(true);
+        // Run UI in separate thread
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run()
+            {
+                mainWindow.setVisible(true);
+            }
+        });
     }
     
 }
