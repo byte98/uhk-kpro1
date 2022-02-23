@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing state of program which displays dialog for setting distance between station (with destination selected)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class DistancesSetTo extends State
+public class DistancesSetTo extends TextUIState
 {
 
     /**
@@ -43,51 +43,51 @@ public class DistancesSetTo extends State
      * Creates new state of program which displays dialog for setting distance between station (with destination selected)
      * @param controller Controller of program
      */
-    public DistancesSetTo(Controller controller)
+    public DistancesSetTo(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/set:to";
-        this.screen = new HTMLTemplateScreen("distances-set-to", "distances-set-to.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances-set-to", "distances-set-to.html");
         this.name = "distances-set-to";
         this.strict = false;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<nazev nebo zkratka stanice>", Color.YELLOW, "Cilova stanice pro nastaveni vzdalenosti");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<nazev nebo zkratka stanice>", Color.YELLOW, "Cilova stanice pro nastaveni vzdalenosti");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         this.origin = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(data.get("station_from"));
         data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(
                 this.origin
         ));
         data.put("station_from", this.origin.GetName() + " (" + this.origin.GetAbbrevation() + ")");
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("cancel"))
         {
-            this.controller.ChangeState("distances");
+            this.controller.changeState("distances");
         }
         else
         {
             Station s = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(input);
             if (s == null)
             {
-                this.controller.ShowError("Neznama stanice '" + input + "'!");
+                this.controller.showError("Neznama stanice '" + input + "'!");
             }
             else
             {
                 Map<String, String> data = new HashMap<>();
                 data.put("station_from", this.origin.GetAbbrevation());
                 data.put("station_to", s.GetAbbrevation());
-                this.controller.ChangeState("distances-set-distance", data);
+                this.controller.changeState("distances-set-distance", data);
             }
         }
     }

@@ -24,7 +24,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ import java.util.Map;
  * Class representing tariff viewer for distance tariffs (with delete dialog)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class TariffsDistDelete extends State {
+public class TariffsDistDelete extends TextUIState {
 
     /**
      * Tariff which is displayed
@@ -45,21 +45,21 @@ public class TariffsDistDelete extends State {
      * Creates new tariff viewer for distance tariffs (with delete dialog)
      * @param controller Controller of program
      */
-    public TariffsDistDelete(Controller controller)
+    public TariffsDistDelete(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
-        this.screen = new HTMLTemplateScreen("tariffs-dist-delete", "tariffs-dist-delete.html");
+        this.screen = new TextUIHTMLTemplateScreen("tariffs-dist-delete", "tariffs-dist-delete.html");
         this.name = "tariffs-dist-delete";
         this.strict = true;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("no", Color.GREEN, "Zrusit");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("yes", Color.RED, "Smazat tarif");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("no", Color.GREEN, "Zrusit");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("yes", Color.RED, "Smazat tarif");
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         this.tariff =(DistanceTariff) cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GetTariff(data.get("tariff_abbr"));
         if (tariff != null)
@@ -92,25 +92,25 @@ public class TariffsDistDelete extends State {
             data.put("tariff_prices", this.tariff.GeneratePriceListRows(min, max));
             this.commandPrefix = "/data/tariffs/" + this.tariff.GetAbbr().toLowerCase();
         }
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch(input.toLowerCase())
         {
             case "no": 
                 Map<String, String> data = new HashMap<>();
                 data.put("tariff_abbr", this.tariff.GetAbbr());
-                this.controller.ChangeState("tariffs-dist-view"); 
+                this.controller.changeState("tariffs-dist-view"); 
                 break;
             case "yes":
                 String tarifName = this.tariff.GetName();
                 cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().RemoveTariff(this.tariff);
-                this.controller.ShowSucess("Tarif '" + tarifName + "' byl uspesne odebran.");
-                this.controller.ChangeState("tariffs");
+                this.controller.showSucess("Tarif '" + tarifName + "' byl uspesne odebran.");
+                this.controller.changeState("tariffs");
                 break;
         }
     }    

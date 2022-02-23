@@ -87,9 +87,9 @@ public class Controller {
                 mainWindow.pack();
                 mainWindow.setVisible(true);
                 mainWindow.SetController(Controller.instance);
-                ChangeState("welcome");
+                changeState("welcome");
                 
-                helpWindow = new HelpWindow();
+                helpWindow = new ITextUIHelpWindow();
                 helpWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 helpWindow.pack();
             }
@@ -158,7 +158,7 @@ public class Controller {
      */
     public void HandleCommand(String command)
     {
-        this.actualState.HandleInput(command);
+        this.actualState.handleInput(command);
     }
     
     /**
@@ -210,7 +210,7 @@ public class Controller {
      * Changes state of program
      * @param nextState Name of state of program
      */
-    public void ChangeState(String nextState)
+    public void changeState(String nextState)
     {
         State state = this.GetState(nextState);
         if (state != null)
@@ -231,7 +231,7 @@ public class Controller {
      * @param nextState Name of state of program
      * @param data Data which will be displayed on screen
      */
-    public void ChangeState(String nextState, Map<String, String> data)
+    public void changeState(String nextState, Map<String, String> data)
     {
         State state = this.GetState(nextState);
         if (state != null)
@@ -257,7 +257,7 @@ public class Controller {
             State s = this.actualState;
             this.actualState = this.previousState;
             this.previousState = s;
-            this.ChangeState(this.actualState.GetName());
+            this.changeState(this.actualState.GetName());
         }
     }
     
@@ -272,7 +272,7 @@ public class Controller {
             State s = this.actualState;
             this.actualState = this.previousState;
             this.previousState = s;
-            this.ChangeState(this.actualState.GetName(), data);
+            this.changeState(this.actualState.GetName(), data);
         }
     }
     

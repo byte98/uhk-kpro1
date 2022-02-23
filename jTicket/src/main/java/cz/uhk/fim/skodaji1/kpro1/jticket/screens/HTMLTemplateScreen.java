@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * Class representing HTML screen with supported templates
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class HTMLTemplateScreen extends HTMLScreen {
+public class TextUIHTMLTemplateScreen extends HTMLScreen {
     
     /**
      * Original content of HTML file with template
@@ -40,7 +40,7 @@ public class HTMLTemplateScreen extends HTMLScreen {
      * @param name Name of screen
      * @param fileName File with screen content
      */
-    public HTMLTemplateScreen(String name, String fileName)
+    public TextUIHTMLTemplateScreen(String name, String fileName)
     {
         super(name, fileName);
     }

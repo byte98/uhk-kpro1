@@ -17,7 +17,7 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -46,12 +46,12 @@ public class HelpWindow extends JFrame
     /**
      * Screen containing list of all available stations
      */
-    private final HTMLTemplateScreen stations; 
+    private final TextUIHTMLTemplateScreen stations; 
     
     /**
      * Screen containing list of all available tariffs
      */
-    private final HTMLTemplateScreen tariffs;
+    private final TextUIHTMLTemplateScreen tariffs;
     
     /**
      * HTML string which will be added before any HTML document
@@ -76,8 +76,8 @@ public class HelpWindow extends JFrame
         this.scrollBar = new JScrollPane(this.content, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.getContentPane().add(this.scrollBar);
         
-        this.stations = new HTMLTemplateScreen("help-stations", "help-stations.html");
-        this.tariffs = new HTMLTemplateScreen("help-tariffs", "help-tariffs.html");
+        this.stations = new TextUIHTMLTemplateScreen("help-stations", "help-stations.html");
+        this.tariffs = new TextUIHTMLTemplateScreen("help-tariffs", "help-tariffs.html");
     }
     
     /**

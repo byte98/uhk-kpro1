@@ -22,7 +22,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import java.util.Map;
  * Class representing tariff viewer for zone tariffs
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class TariffsZoneView extends State {
+public class TariffsZoneView extends TextUIState {
 
     /**
      * Tariff which is displayed
@@ -43,21 +43,21 @@ public class TariffsZoneView extends State {
      * Creates new tariff viewer for zone tariffs
      * @param controller Controller of program
      */
-    public TariffsZoneView(Controller controller)
+    public TariffsZoneView(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
-        this.screen = new HTMLTemplateScreen("tariffs-zone-view", "tariffs-zone-view.html");
+        this.screen = new TextUIHTMLTemplateScreen("tariffs-zone-view", "tariffs-zone-view.html");
         this.name = "tariffs-zone-view";
         this.strict = true;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("delete", Color.RED, "Smazat tarif");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("back", Color.MAGENTA, "Zpet");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("delete", Color.RED, "Smazat tarif");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("back", Color.MAGENTA, "Zpet");
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         this.tariff =(ZoneTariff) cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GetTariff(data.get("tariff_abbr"));
         if (tariff != null)
@@ -67,20 +67,20 @@ public class TariffsZoneView extends State {
             data.put("tariff_prices", this.GetTariffPrices());
             this.commandPrefix = "/data/tariffs/" + this.tariff.GetAbbr().toLowerCase();
         }
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch(input.toLowerCase())
         {
-            case "back": this.controller.ChangeState("tariffs"); break;
+            case "back": this.controller.changeState("tariffs"); break;
             case "delete": 
                 Map<String, String> data = new HashMap<>();
                 data.put("tariff_abbr", this.tariff.GetAbbr());
-                this.controller.ChangeState("tariffs-zone-delete", data); 
+                this.controller.changeState("tariffs-zone-delete", data); 
                 break;
         }
     }

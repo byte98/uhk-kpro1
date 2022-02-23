@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing add station form (with displayed confirmation)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class StationsAdd extends State
+public class StationsAdd extends TextUIState
 {
 
     /**
@@ -48,50 +48,50 @@ public class StationsAdd extends State
      * Creates new add station form (with displayed confirmation)
      * @param controller Controller of program
      */
-    public StationsAdd(Controller controller)
+    public StationsAdd(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/stations/add?";
-        this.screen = new HTMLTemplateScreen("stations-add", "stations-add.html");
+        this.screen = new TextUIHTMLTemplateScreen("stations-add", "stations-add.html");
         this.name = "stations-add";
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("yes", Color.GREEN, "Udaje jsou v poradku, pridat stanici");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("no", Color.RED, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("yes", Color.GREEN, "Udaje jsou v poradku, pridat stanici");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("no", Color.RED, "Zrusit");
         
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if ("yes".equals(input))
         {
             Station st = new Station(this.stationAbbr, this.stationName);
             cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().AddStation(st);
             System.out.printf("New station (name: %s, abbreavation: %s) has been added\n", this.stationName, this.stationAbbr);
-            this.controller.ShowSucess("Stanice '" + this.stationName + " (" + this.stationAbbr + ")' byla uspesne pridana!");
-            this.controller.ChangeState("stations");
+            this.controller.showSucess("Stanice '" + this.stationName + " (" + this.stationAbbr + ")' byla uspesne pridana!");
+            this.controller.changeState("stations");
         }
         else
         {
-            this.controller.ChangeState("stations");
+            this.controller.changeState("stations");
         }
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         this.stationAbbr = data.get("station_abbr");
         this.stationName = data.get("station_name");
         return this.screen;

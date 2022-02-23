@@ -22,7 +22,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import java.util.Map;
  * Class representing creating new zone tariff (with setting zones to stations)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class TariffsZoneZones extends State {
+public class TariffsZoneZones extends TextUIState {
 
     /**
      * Tariff which will be edited
@@ -53,17 +53,17 @@ public class TariffsZoneZones extends State {
      * Creates new dialog for creating new zone tariff (with setting zones to stations)
      * @param controller Controller of program
      */
-    public TariffsZoneZones(Controller controller)
+    public TariffsZoneZones(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
-        this.screen = new HTMLTemplateScreen("tariffs-zone-zones", "tariffs-zone-zones.html");
+        this.screen = new TextUIHTMLTemplateScreen("tariffs-zone-zones", "tariffs-zone-zones.html");
         this.name = "tariffs-zone-zones";
         this.strict = false;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<cele cislo>", Color.YELLOW, "Cislo zony pro stanici");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<cele cislo>", Color.YELLOW, "Cislo zony pro stanici");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
     }
 
     @Override
@@ -74,19 +74,19 @@ public class TariffsZoneZones extends State {
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("tariff_zones", this.tariff.GenerateZonesTr());
         data.put("tariff_name", this.tariff.GetName());
         data.put("station_name", this.stations[this.stIdx].GetName());
         data.put("station_abbr", this.stations[this.stIdx].GetAbbrevation());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         this.tariff = new ZoneTariff(data.get("tariff_name"), data.get("tariff_abbr"));
         this.commandPrefix = "/data/tariffs/zone/" + data.get("tariff_abbr").toLowerCase();
@@ -94,7 +94,7 @@ public class TariffsZoneZones extends State {
         data.put("station_name", this.stations[this.stIdx].GetName());
         data.put("station_abbr", this.stations[this.stIdx].GetAbbrevation());
         data.put("tariff_name", this.tariff.GetName());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
@@ -136,11 +136,11 @@ public class TariffsZoneZones extends State {
     }
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("cancel"))
         {
-            this.controller.ChangeState("tariffs");
+            this.controller.changeState("tariffs");
         }
         else if (this.CheckInt(input))
         {
@@ -148,15 +148,15 @@ public class TariffsZoneZones extends State {
             if (zone > 0)
             {
                 this.tariff.SetZone(this.stations[this.stIdx], zone);
-                this.controller.ShowSucess("Zona pro stanici '" + this.stations[this.stIdx].GetName() + "' byla nastavene.");
+                this.controller.showSucess("Zona pro stanici '" + this.stations[this.stIdx].GetName() + "' byla nastavene.");
                 this.stIdx++;
                 if (this.stIdx >= this.stations.length)
                 {
                     cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().AddTariff(this.tariff);
-                    this.controller.ShowSucess("Zony pro veschny stanice byly uspesne nastaveny!");
+                    this.controller.showSucess("Zony pro veschny stanice byly uspesne nastaveny!");
                     Map<String, String> data = new HashMap<>();
                     data.put("tariff_abbr", this.tariff.GetAbbr());
-                    this.controller.ChangeState("tariffs-zone-prices", data);
+                    this.controller.changeState("tariffs-zone-prices", data);
                 }
                 else
                 {
@@ -165,12 +165,12 @@ public class TariffsZoneZones extends State {
             }
             else
             {
-                this.controller.ShowError("Cislo zony musi byt kladne cislo!");
+                this.controller.showError("Cislo zony musi byt kladne cislo!");
             }
         }
         else
         {
-            this.controller.ShowError("Neznamy prikaz '" + input + "'!");
+            this.controller.showError("Neznamy prikaz '" + input + "'!");
         }
     }
     

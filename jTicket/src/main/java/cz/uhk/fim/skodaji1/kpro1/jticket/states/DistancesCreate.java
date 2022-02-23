@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing state of program which displays creating of table of distances
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class DistancesCreate extends State
+public class DistancesCreate extends TextUIState
 {
 
     /**
@@ -53,17 +53,17 @@ public class DistancesCreate extends State
      * Creates new state of program with table of distances
      * @param controller 
      */
-    public DistancesCreate(Controller controller)
+    public DistancesCreate(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/create";
-        this.screen = new HTMLTemplateScreen("distances-create", "distances-create.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances-create", "distances-create.html");
         this.name = "distances-create";
         this.strict = false;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<cele cislo>", Color.YELLOW, "Vzdalenost mezi stanicemi v kilometrech");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<cele cislo>", Color.YELLOW, "Vzdalenost mezi stanicemi v kilometrech");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
     }
     
     
@@ -117,7 +117,7 @@ public class DistancesCreate extends State
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         if (this.stations.length > 1)
         {
@@ -125,38 +125,38 @@ public class DistancesCreate extends State
             data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(this.stations[this.origin]));
             data.put("station_from", this.stations[this.origin].GetName());
             data.put("station_to", this.stations[this.destination].GetName());
-            ((HTMLTemplateScreen) this.screen).SetContent(data);
+            ((TextUIHTMLTemplateScreen) this.screen).SetContent(data);
         }
         return this.screen;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         if (this.stations.length > 1)
         {
             data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(this.stations[this.origin]));
             data.put("station_from", this.stations[this.origin].GetName());
             data.put("station_to", this.stations[this.destination].GetName());
-            ((HTMLTemplateScreen) this.screen).SetContent(data);
+            ((TextUIHTMLTemplateScreen) this.screen).SetContent(data);
         }
         return this.screen;
     }
     
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("cancel"))
         {
-            this.controller.ChangeState("distances");
+            this.controller.changeState("distances");
         }
         else if (this.CheckInt(input) == true)
         {
             int value = Integer.parseInt(input);
             if (value < 0)
             {
-                this.controller.ShowError("Zadane cislo nesmi byt mensi nez nula!");
+                this.controller.showError("Zadane cislo nesmi byt mensi nez nula!");
             }
             else
             {
@@ -165,7 +165,7 @@ public class DistancesCreate extends State
                         this.stations[this.destination],
                         value
                 );
-                this.controller.ShowSucess("Vzdalenost mezi stanicemi uspesne nastavena.");                
+                this.controller.showSucess("Vzdalenost mezi stanicemi uspesne nastavena.");                
                 boolean nextToSet = this.NextStationsDistance();
                 if (nextToSet == true)
                 {
@@ -173,14 +173,14 @@ public class DistancesCreate extends State
                 }
                 else
                 {
-                    this.controller.ShowSucess("Tabulka vzdalenosti byla uspesne vytvorena.");
-                    this.controller.ChangeState("distances");
+                    this.controller.showSucess("Tabulka vzdalenosti byla uspesne vytvorena.");
+                    this.controller.changeState("distances");
                 }
             }
         }
         else
         {
-            this.controller.ShowError("Neznamy prikaz '" + input + "'!");
+            this.controller.showError("Neznamy prikaz '" + input + "'!");
         }
     }
     
@@ -189,8 +189,8 @@ public class DistancesCreate extends State
     {
       if (this.stations.length < 2)   
       {
-          this.controller.ShowError("V systemu je prilis malo stanic!");
-          this.controller.ChangeState("distances");
+          this.controller.showError("V systemu je prilis malo stanic!");
+          this.controller.changeState("distances");
       }
     }
     

@@ -20,7 +20,7 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.states;
 import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ import java.util.Map;
  * Class representing edit station form
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class StationsEdit extends State
+public class StationsEdit extends TextUIState
 {
     
     /**
@@ -57,54 +57,54 @@ public class StationsEdit extends State
      * Creates new edit station form
      * @param controller Controller of program
      */
-    public StationsEdit(Controller controller)
+    public StationsEdit(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/stations/edit?";
-        this.screen = new HTMLTemplateScreen("stations-edit", "stations-edit.html");
+        this.screen = new TextUIHTMLTemplateScreen("stations-edit", "stations-edit.html");
         this.name = "stations-edit";
         this.strict = true;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("yes", Color.GREEN, "Udaje jsou v poradku, zmenit stanici");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("no", Color.RED, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("yes", Color.GREEN, "Udaje jsou v poradku, zmenit stanici");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("no", Color.RED, "Zrusit");
         
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch (input.toLowerCase())
         {
             case "no":
-                this.controller.ChangeState("stations");
+                this.controller.changeState("stations");
                 break;
             case "yes":
                 cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().EditStation(cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(this.stationAbbr), this.newStationName, this.newStationAbbr);
-                this.controller.ShowSucess("Stanice '" + this.stationName + " (" + this.stationAbbr + ")' byla uspesne zmenena.");
-                this.controller.ChangeState("stations");
+                this.controller.showSucess("Stanice '" + this.stationName + " (" + this.stationAbbr + ")' byla uspesne zmenena.");
+                this.controller.changeState("stations");
                 break;
         }
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
         this.stationAbbr = data.get("station_abbr");
         this.stationName = data.get("station_name");
         this.newStationAbbr = data.get("station_new_abbr");
         this.newStationName = data.get("station_new_name");
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
 }

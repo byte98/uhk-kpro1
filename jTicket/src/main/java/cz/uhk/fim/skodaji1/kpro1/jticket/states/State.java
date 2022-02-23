@@ -19,7 +19,7 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.states;
 
 import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.util.Map;
 
@@ -63,7 +63,7 @@ public abstract class State {
      * Creates new state of program
      * @param controller Controller of program
      */
-    public State(Controller controller)
+    public State(TextUIController controller)
     {
         this.controller = controller;
     }
@@ -91,7 +91,7 @@ public abstract class State {
      * Gets screen representing state of program
      * @return Screen representing state of program
      */
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         return this.screen;
     }
@@ -101,12 +101,12 @@ public abstract class State {
      * @param data Data which will be displayed on screen
      * @return Screen representing state of program
      */
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         Screen reti = this.screen;
-        if (data != null && this.screen instanceof HTMLTemplateScreen)
+        if (data != null && this.screen instanceof TextUIHTMLTemplateScreen)
         {
-            HTMLTemplateScreen actualScreen = (HTMLTemplateScreen)this.screen;
+            TextUIHTMLTemplateScreen actualScreen = (TextUIHTMLTemplateScreen)this.screen;
             actualScreen.SetContent(data);
             reti = actualScreen;
         }
@@ -135,7 +135,7 @@ public abstract class State {
      * Handles input from command line
      * @param input Input from command line
      */
-    public abstract void HandleInput(String input);
+    public abstract void handleInput(String input);
     
     /**
      * Loads screen

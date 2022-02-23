@@ -262,7 +262,7 @@ public class MainWindow extends JFrame
             @Override
             public void actionPerformed(ActionEvent evt)
             {
-                HandleInput();
+                handleInput();
             }
         });
         
@@ -300,7 +300,7 @@ public class MainWindow extends JFrame
      * Sets controller of window
      * @param controller Controller of window
      */
-    public void SetController(Controller controller)
+    public void SetController(TextUIController controller)
     {
         this.controller = controller;
     }
@@ -308,7 +308,7 @@ public class MainWindow extends JFrame
     /**
      * Function which handle input from command line
      */
-    private void HandleInput()
+    private void handleInput()
     {
         String cmd = this.command.getText().trim();
         

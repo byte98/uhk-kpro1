@@ -20,7 +20,7 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.states;
 import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ import java.util.Map;
  * Class representing edit station form (with selected name option)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class StationsEditName extends State
+public class StationsEditName extends TextUIState
 {
     
     /**
@@ -47,40 +47,40 @@ public class StationsEditName extends State
      * Creates new edit station form (with selected name option)
      * @param controller Controller of program
      */
-    public StationsEditName(Controller controller)
+    public StationsEditName(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/stations/edit:name";
-        this.screen = new HTMLTemplateScreen("stations-edit-name", "stations-edit-name.html");
+        this.screen = new TextUIHTMLTemplateScreen("stations-edit-name", "stations-edit-name.html");
         this.name = "stations-edit-name";
         this.strict = false;
         
-        this.helps = new Help[3];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<nazev stanice>", Color.YELLOW, "Novy nazev stanice");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("delete", Color.MAGENTA, "Smazat stanici");
-        this.helps[2] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps = new ITextUIHelp[3];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<nazev stanice>", Color.YELLOW, "Novy nazev stanice");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("delete", Color.MAGENTA, "Smazat stanici");
+        this.helps[2] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
         
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if ("cancel".equals(input.toLowerCase()))
         {
-            this.controller.ChangeState("stations");   
+            this.controller.changeState("stations");   
         }
         else if ("delete".equals(input.toLowerCase()))
         {
             Map<String, String> data = new HashMap<>();
             data.put("station_name", this.stationName);
             data.put("station_abbr", this.stationAbbr);
-            this.controller.ChangeState("stations-delete", data);
+            this.controller.changeState("stations-delete", data);
         }
         else
         {
             if (cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().CheckFreeName(input) == false && !input.toLowerCase().equals(this.stationName.toLowerCase()))
             {
-                this.controller.ShowError("Jmeno stanice '" + input + "' jiz existuje!");
+                this.controller.showError("Jmeno stanice '" + input + "' jiz existuje!");
             }
             else
             {
@@ -88,27 +88,27 @@ public class StationsEditName extends State
                 data.put("station_name", this.stationName);
                 data.put("station_abbr", this.stationAbbr);
                 data.put("station_new_name", input);
-                this.controller.ChangeState("stations-edit-abbr", data);
+                this.controller.changeState("stations-edit-abbr", data);
             }            
         }
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
         this.stationAbbr = data.get("station_abbr");
         this.stationName = data.get("station_name");
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
 }

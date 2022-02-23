@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing state of program which displays dialog for setting distance between station (with distance selected)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class DistancesSetDistance extends State
+public class DistancesSetDistance extends TextUIState
 {
 
     /**
@@ -48,21 +48,21 @@ public class DistancesSetDistance extends State
      * Creates new state of program which displays dialog for setting distance between station (with distance selected)
      * @param controller Controller of program
      */
-    public DistancesSetDistance(Controller controller)
+    public DistancesSetDistance(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/set:distance";
-        this.screen = new HTMLTemplateScreen("distances-set-distance", "distances-set-distance.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances-set-distance", "distances-set-distance.html");
         this.name = "distances-set-distance";
         this.strict = false;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<cele cislo>", Color.YELLOW, "Vzdalenost mezi vychozi a cilovou stanici");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<cele cislo>", Color.YELLOW, "Vzdalenost mezi vychozi a cilovou stanici");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         this.origin = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(data.get("station_from"));
         this.destination = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(data.get("station_to"));
@@ -73,16 +73,16 @@ public class DistancesSetDistance extends State
         data.put("station_to", this.destination.GetName() + " (" + this.destination.GetAbbrevation() + ")");
         int dist = cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GetDistance(this.origin, this.destination);
         data.put("distance", Integer.toString(dist));
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("cancel"))
         {
-            this.controller.ChangeState("distances");
+            this.controller.changeState("distances");
         }
         else
         {
@@ -91,7 +91,7 @@ public class DistancesSetDistance extends State
                 int value = Integer.parseInt(input);
                 if (value < 0)
                 {
-                    this.controller.ShowError("Vzdalenost musi byt nezaporne cislo!");
+                    this.controller.showError("Vzdalenost musi byt nezaporne cislo!");
                 }
                 else
                 {
@@ -99,12 +99,12 @@ public class DistancesSetDistance extends State
                     data.put("station_from", this.origin.GetAbbrevation());
                     data.put("station_to",this.destination.GetAbbrevation());
                     data.put("distance", input);
-                    this.controller.ChangeState("distances-set", data);
+                    this.controller.changeState("distances-set", data);
                 }
             }
             else
             {
-                this.controller.ShowError("Zadany vstup '" + input + "' neni cislo!");
+                this.controller.showError("Zadany vstup '" + input + "' neni cislo!");
             }
         }
     }

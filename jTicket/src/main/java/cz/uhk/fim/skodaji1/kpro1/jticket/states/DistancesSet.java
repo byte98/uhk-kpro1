@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing state of program which displays dialog for setting distance between station (with confirming dialog)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class DistancesSet extends State
+public class DistancesSet extends TextUIState
 {
 
     /**
@@ -53,21 +53,21 @@ public class DistancesSet extends State
      * Creates new state of program which displays dialog for setting distance between station (with confirming dialog)
      * @param controller Controller of program
      */
-    public DistancesSet(Controller controller)
+    public DistancesSet(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/set?";
-        this.screen = new HTMLTemplateScreen("distances-set", "distances-set.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances-set", "distances-set.html");
         this.name = "distances-set";
         this.strict = true;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("yes", Color.GREEN, "Udaje jsou v poradku, zmenit vzdalenost mezi stanicemi");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("no", Color.RED, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("yes", Color.GREEN, "Udaje jsou v poradku, zmenit vzdalenost mezi stanicemi");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("no", Color.RED, "Zrusit");
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         this.origin = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(data.get("station_from"));
         this.destination = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(data.get("station_to"));
@@ -77,22 +77,22 @@ public class DistancesSet extends State
         data.put("station_from", this.origin.GetName() + " (" + this.origin.GetAbbrevation() + ")");
         data.put("station_to", this.destination.GetName() + " (" + this.destination.GetAbbrevation() + ")");
         this.distance = Integer.parseInt(data.get("distance"));
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch(input.toLowerCase())
         {
             case "yes":
                 cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().SetDistance(this.origin, this.destination, this.distance);
-                this.controller.ShowSucess("Vzdalenost mezi stanicemi byla uspesne zmenena.");
-                this.controller.ChangeState("distances");
+                this.controller.showSucess("Vzdalenost mezi stanicemi byla uspesne zmenena.");
+                this.controller.changeState("distances");
                 break;
             case "no":
-                this.controller.ChangeState("distances");
+                this.controller.changeState("distances");
                 break;
         }
     }

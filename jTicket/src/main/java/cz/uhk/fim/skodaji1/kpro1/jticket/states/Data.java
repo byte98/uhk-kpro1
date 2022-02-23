@@ -25,7 +25,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -40,28 +40,28 @@ import java.util.Map;
  * Class representing data menu
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class Data extends State {
+public class Data extends TextUIState {
 
     /**
      * Creates new data menu
      * @param controller Controller of program
      */
-    public Data(Controller controller)
+    public Data(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data";
-        this.screen = new HTMLTemplateScreen("data", "data.html");
+        this.screen = new TextUIHTMLTemplateScreen("data", "data.html");
         this.name = "data";
         
-        this.helps = new Help[4];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("stations", Color.YELLOW, "Rezim upravy stanice");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("distances", Color.YELLOW, "Rezim upravy vzdalenosti mezi stanicemi");
-        this.helps[2] = HelpFactory.CreateSimpleHelp("tariffs", Color.YELLOW, "Rezim upravy tarifu");
-        this.helps[3] = HelpFactory.CreateSimpleHelp("back", Color.MAGENTA, "Zpet");
+        this.helps = new ITextUIHelp[4];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("stations", Color.YELLOW, "Rezim upravy stanice");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("distances", Color.YELLOW, "Rezim upravy vzdalenosti mezi stanicemi");
+        this.helps[2] = TextUIHelpFactory.createSimpleHelp("tariffs", Color.YELLOW, "Rezim upravy tarifu");
+        this.helps[3] = TextUIHelpFactory.createSimpleHelp("back", Color.MAGENTA, "Zpet");
     }
 
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         String stString = "";
@@ -120,19 +120,19 @@ public class Data extends State {
         }
         data.put("tariffs_list", Controller.TrimString(tariffsString, 128));
         
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch (input.toLowerCase())
         {
-            case "back": this.controller.ChangeState("welcome"); break;
-            case "stations": this.controller.ChangeState("stations"); break;
-            case "distances": this.controller.ChangeState("distances"); break;
-            case "tariffs": this.controller.ChangeState("tariffs"); break;
+            case "back": this.controller.changeState("welcome"); break;
+            case "stations": this.controller.changeState("stations"); break;
+            case "distances": this.controller.changeState("distances"); break;
+            case "tariffs": this.controller.changeState("tariffs"); break;
         }
     }
     

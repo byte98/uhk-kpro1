@@ -17,7 +17,6 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
@@ -39,6 +40,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.Timer;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 /**
  * Class representing main window for text user interface
@@ -145,12 +150,12 @@ public class TextUIMainWindow extends JFrame
     /**
      * Actually displayed help to the commands
      */
-    private Help[] actualHelp;
+    private ITextUIHelp[] actualHelp;
     
     /**
      * Controller of window
      */
-    private Controller controller = null;
+    private TextUIController controller = null;
     
     /**
      * Flag, whether window should check input or not
@@ -254,7 +259,7 @@ public class TextUIMainWindow extends JFrame
             @Override
             public void actionPerformed(ActionEvent evt)
             {
-                //input handle
+                handleInput();
             }
         });
         
@@ -287,5 +292,212 @@ public class TextUIMainWindow extends JFrame
             }
         });
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    /**
+     * Sets controller of window
+     * @param controller Controller of window
+     */
+    public void setController(TextUIController controller)
+    {
+        this.controller = controller;
+    }
+    
+    /**
+     * Function which handle input from command line
+     */
+    private void handleInput()
+    {
+        String cmd = this.command.getText().trim();
+        
+        SimpleAttributeSet def = new SimpleAttributeSet();
+        StyleConstants.setItalic(def, false);
+        StyleConstants.setBold(def, false);
+        StyleConstants.setBackground(def, Color.BLACK);
+        StyleConstants.setForeground(def, Color.LIGHT_GRAY);
+        StyleConstants.setFontFamily(def, this.defaultFont.getFamily());
+        StyleConstants.setFontSize(def, this.defaultFont.getSize());
+        
+        SimpleAttributeSet err = new SimpleAttributeSet(def);
+        StyleConstants.setForeground(err, Color.RED);
+        
+        Document doc = this.in.getStyledDocument();
+        try
+        {
+            doc.insertString(doc.getLength(), "\n" + this.commandMode + "> " + cmd, def);
+        }
+        catch (BadLocationException ex)
+        {
+            Logger.getLogger(TextUIMainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.command.setText("");
+        
+        // Check, if comand is allowed
+        if (this.strict == true)
+        {
+            boolean allowed = false;
+            for (ITextUIHelp h: this.actualHelp)
+            {
+                if (h.getCommand().toLowerCase() == null ? cmd.toLowerCase() == null : h.getCommand().toLowerCase().equals(cmd.toLowerCase()))
+                {
+                    allowed = true;
+                    break;
+                }
+            }
+            if (allowed == false && !"".equals(cmd))
+            {
+                try
+                {
+                    doc.insertString(doc.getLength(), "\n[!] Neznamy prikaz '" + cmd + "'!", err);
+                }
+                catch (BadLocationException ex)
+                {
+                    Logger.getLogger(TextUIMainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else if (allowed == true)
+            {
+                this.controller.handleCommand(cmd);
+            }
+        }
+        else
+        {
+            this.controller.handleCommand(cmd);
+        }
+        this.inScrollBar.getVerticalScrollBar().setValue(this.inScrollBar.getVerticalScrollBar().getMaximum());
+        
+    }
+    
+    /**
+     * Shows screen in output window
+     * @param screen Screen which will be shown in output
+     */
+    public void showScreen(ITextUIScreen screen)
+    {
+        String C = screen.getContent().replace("<head>", "<head>" + this.defaultHTML).replace("null", "");
+        this.out.setText(C); 
+        this.out.setSelectionStart(0);
+        this.out.setSelectionEnd(0);
+    }
+    
+    /**
+     * Shows available commands
+     * @param help List of available commands and help to them
+     */
+    public void showHelp(ITextUIHelp[] help)
+    {
+        this.actualHelp = help;
+        this.help.setText("");
+        
+        SimpleAttributeSet def = new SimpleAttributeSet();
+        StyleConstants.setItalic(def, false);
+        StyleConstants.setBold(def, false);
+        StyleConstants.setBackground(def, Color.BLACK);
+        StyleConstants.setForeground(def, Color.LIGHT_GRAY);
+        StyleConstants.setFontFamily(def, this.defaultFont.getFamily());
+        StyleConstants.setFontSize(def, this.defaultFont.getSize());
+        
+        
+        // Display each help
+        SimpleAttributeSet aS = new SimpleAttributeSet(def);
+        Document doc = this.help.getStyledDocument();
+        for (ITextUIHelp h: help)
+        {
+            StyleConstants.setForeground(aS, h.getColor());
+            try
+            {
+                doc.insertString(doc.getLength(), "'", def);
+                doc.insertString(doc.getLength(), h.getCommand(), aS);
+                doc.insertString(doc.getLength(), "' - " + h.getHelp() + " \n", def);
+                
+            }
+            catch (BadLocationException ex)
+            {
+                Logger.getLogger(TextUIMainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    /**
+     * Sets, whether window should check input or not
+     * @param strict Flag, whether window should check input or not
+     */
+    public void setStrict(boolean strict)
+    {
+        this.strict = strict;
+    }
+    
+    /**
+     * Shows error input message
+     * @param message Message which will be shown
+     */
+    public void showInputError(String message)
+    {
+        SimpleAttributeSet def = new SimpleAttributeSet();
+        StyleConstants.setItalic(def, false);
+        StyleConstants.setBold(def, false);
+        StyleConstants.setBackground(def, Color.BLACK);
+        StyleConstants.setForeground(def, Color.LIGHT_GRAY);
+        StyleConstants.setFontFamily(def, this.defaultFont.getFamily());
+        StyleConstants.setFontSize(def, this.defaultFont.getSize());
+        
+        SimpleAttributeSet err = new SimpleAttributeSet(def);
+        StyleConstants.setForeground(err, Color.RED);
+        
+        Document doc = this.in.getStyledDocument();
+        try
+        {
+            doc.insertString(doc.getLength(), "\n[!] " + message, err);
+        }
+        catch (BadLocationException ex)
+        {
+            Logger.getLogger(TextUIMainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Shows success input message
+     * @param message Message which will be shown
+     */
+    public void showInputSuccess(String message)
+    {
+        SimpleAttributeSet def = new SimpleAttributeSet();
+        StyleConstants.setItalic(def, false);
+        StyleConstants.setBold(def, false);
+        StyleConstants.setBackground(def, Color.BLACK);
+        StyleConstants.setForeground(def, Color.LIGHT_GRAY);
+        StyleConstants.setFontFamily(def, this.defaultFont.getFamily());
+        StyleConstants.setFontSize(def, this.defaultFont.getSize());
+        
+        SimpleAttributeSet success = new SimpleAttributeSet(def);
+        StyleConstants.setForeground(success, Color.GREEN);
+        
+        Document doc = this.in.getStyledDocument();
+        try
+        {
+            doc.insertString(doc.getLength(), "\n>>> " + message, success);
+        }
+        catch (BadLocationException ex)
+        {
+            Logger.getLogger(TextUIMainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Sets command prefix to command line
+     * @param commandPrefix Prefix which will be displayed in command line
+     */
+    public void setCommandMode(String commandPrefix)
+    {
+        this.commandMode = commandPrefix;
+        this.commandPrefix.setText(this.commandMode + "> ");
+    }
+    
+    /**
+     * Sets focus on command line
+     */
+    public void setFocusOnCommandLine()
+    {
+        this.command.requestFocus();
     }
 }

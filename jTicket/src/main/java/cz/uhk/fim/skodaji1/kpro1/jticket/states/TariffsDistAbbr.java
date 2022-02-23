@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing creating new distance tariff (with abbreavation selected)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class TariffsDistAbbr extends State {
+public class TariffsDistAbbr extends TextUIState {
 
     /**
      * Name of tariff
@@ -42,57 +42,57 @@ public class TariffsDistAbbr extends State {
      * Creates new dialog for creating new distance tariff (with abbreavation selected)
      * @param controller Controller of program
      */
-    public TariffsDistAbbr(Controller controller)
+    public TariffsDistAbbr(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/distance:abbr";
-        this.screen = new HTMLTemplateScreen("tariffs-dist-abbr", "tariffs-dist-abbr.html");
+        this.screen = new TextUIHTMLTemplateScreen("tariffs-dist-abbr", "tariffs-dist-abbr.html");
         this.name = "tariffs-dist-abbr";
         this.strict = false;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<zkratka tarifu>", Color.YELLOW, "Zkratka tarifu");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<zkratka tarifu>", Color.YELLOW, "Zkratka tarifu");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
     }
 
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("tariffs_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GenerateTariffsTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         data.put("tariffs_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GenerateTariffsTableRows());
         this.tariffName = data.get("tariff_name");
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("cancel"))
         {
-            this.controller.ChangeState("tariffs");
+            this.controller.changeState("tariffs");
         }
         else
         {
             Tariff t = cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GetTariff(input);
             if (t != null)
             {
-                this.controller.ShowError("Tarif '" + input + "' jiz existuje!");
+                this.controller.showError("Tarif '" + input + "' jiz existuje!");
             }
             else
             {
                 Map<String, String> data = new HashMap<>();
                 data.put("tariff_abbr", input);
                 data.put("tariff_name", this.tariffName);
-                this.controller.ChangeState("tariffs-dist", data);
+                this.controller.changeState("tariffs-dist", data);
             }
         }
     }

@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing state of program which displays table of distances from station
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class DistancesViewStation extends State
+public class DistancesViewStation extends TextUIState
 {
 
     /**
@@ -43,20 +43,20 @@ public class DistancesViewStation extends State
      * Creates new state of program with table of distances from station
      * @param controller 
      */
-    public DistancesViewStation(Controller controller)
+    public DistancesViewStation(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/view/";
-        this.screen = new HTMLTemplateScreen("distances-view-station", "distances-view-station.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances-view-station", "distances-view-station.html");
         this.name = "distances-view-station";
         this.strict = true;
         
-        this.helps = new Help[1];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("back", Color.MAGENTA, "Zpet");
+        this.helps = new ITextUIHelp[1];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("back", Color.MAGENTA, "Zpet");
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
        Station s = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(data.get("station"));
        if (s != null)
@@ -65,18 +65,18 @@ public class DistancesViewStation extends State
            data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(s));
            this.origin = s;
            this.commandPrefix = "/data/distances/view/" + s.GetAbbrevation().toLowerCase();
-           ((HTMLTemplateScreen) this.screen).SetContent(data);           
+           ((TextUIHTMLTemplateScreen) this.screen).SetContent(data);           
        }
        return this.screen;
     }
     
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("back"))
         {
-            this.controller.ChangeState("distances-view");
+            this.controller.changeState("distances-view");
         }
     }
     

@@ -27,26 +27,26 @@ import java.awt.Color;
  * Class representing exit dialog of the program
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class Exit extends State {
+public class Exit extends TextUIState {
 
     /**
      * Creates new state of program representing exit dialog
      * @param controller Controller of whole program
      */
-    public Exit(Controller controller)
+    public Exit(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/exit?";
         this.screen = ScreenFactory.CreateHTMLScreen("exit", "exit.html");
         this.name = "exit";
         
-        this.helps = new Help[2];        
-        this.helps[0] = HelpFactory.CreateSimpleHelp("no", Color.GREEN, "Zrusit");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("yes", Color.RED, "Ukoncit program");
+        this.helps = new ITextUIHelp[2];        
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("no", Color.GREEN, "Zrusit");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("yes", Color.RED, "Ukoncit program");
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch (input.toLowerCase())
         {

@@ -17,11 +17,7 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.HelpWindow;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.MainWindow;
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 /**
@@ -41,14 +37,15 @@ public class TextUI implements IUserInterface
      */
     private TextUIHelpWindow helpWindow;
     
+    /**
+     * Controller of text user interface
+     */
+    private TextUIController controller;
+    
     @Override
     public void prepare()
     {
-        this.mainWindow = new TextUIMainWindow();
-        this.mainWindow.pack();
-        
-        this.helpWindow = new TextUIHelpWindow();
-        this.helpWindow.pack();
+        this.controller = TextUIController.getController();        
     }
 
     @Override
@@ -59,6 +56,12 @@ public class TextUI implements IUserInterface
             @Override
             public void run()
             {
+                mainWindow = new TextUIMainWindow();
+                mainWindow.pack();
+                mainWindow.setController(controller);
+
+                helpWindow = new TextUIHelpWindow();
+                helpWindow.pack();
                 mainWindow.setVisible(true);
             }
         });

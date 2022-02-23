@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,55 +31,55 @@ import java.util.Map;
  * Class representing state of program which displays stations menu
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class Stations extends State
+public class Stations extends TextUIState
 {
 
     /**
      * Creates new state of program with stations menu
      * @param controller 
      */
-    public Stations(Controller controller)
+    public Stations(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/stations";
-        this.screen = new HTMLTemplateScreen("stations", "stations.html");
+        this.screen = new TextUIHTMLTemplateScreen("stations", "stations.html");
         this.name = "stations";
         this.strict = false;
         
-        this.helps = new Help[3];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<nazev nebo zkratka stanice>", Color.YELLOW, "Vybrat stanici");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("add", Color.YELLOW, "Pridat novou stanici");
-        this.helps[2] = HelpFactory.CreateSimpleHelp("back", Color.MAGENTA, "Zpet");
+        this.helps = new ITextUIHelp[3];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<nazev nebo zkratka stanice>", Color.YELLOW, "Vybrat stanici");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("add", Color.YELLOW, "Pridat novou stanici");
+        this.helps[2] = TextUIHelpFactory.createSimpleHelp("back", Color.MAGENTA, "Zpet");
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch (input.toLowerCase())
         {
-            case "back": this.controller.ChangeState("data"); break;
-            case "add": this.controller.ChangeState("stations-add-name"); break;
+            case "back": this.controller.changeState("data"); break;
+            case "add": this.controller.changeState("stations-add-name"); break;
             default:
                 Station st = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(input);
                 if (st == null)
                 {
-                    this.controller.ShowError("Stanice '" + input + "' nenalezena!");
+                    this.controller.showError("Stanice '" + input + "' nenalezena!");
                 }
                 else
                 {
                     Map<String, String> data = new HashMap<>();
                     data.put("station_name", st.GetName());
                     data.put("station_abbr", st.GetAbbrevation());
-                    this.controller.ChangeState("stations-edit-name", data);
+                    this.controller.changeState("stations-edit-name", data);
                 }
                 break;
         }

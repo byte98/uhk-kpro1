@@ -24,7 +24,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.TariffType;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.io.File;
@@ -49,7 +49,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
  * Class representing ticket selling state of program
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class Ticket extends State{
+public class Ticket extends TextUIState{
 
     /**
      * Progress in filling form to sell ticket
@@ -69,7 +69,7 @@ public class Ticket extends State{
     /**
      * Array with all needed screens to fill ticket data
      */
-    private final HTMLTemplateScreen[] screens;
+    private final TextUIHTMLTemplateScreen[] screens;
     
     /**
      * Array with helps to each state of filling ticket data
@@ -100,36 +100,36 @@ public class Ticket extends State{
      * Creates new state of ticket selling
      * @param controller Controller of program
      */
-    public Ticket(Controller controller)
+    public Ticket(TextUIController controller)
     {
         super(controller);
         this.ticketData = new HashMap<>();
         this.strict = false;
         this.name = "ticket";
         this.commandPrefix = "/ticket:tariff";
-        this.helps = new Help[4][];
+        this.helps = new ITextUIHelp[4][];
         
-        this.screens = new HTMLTemplateScreen[4];
-        this.screens[0] = new HTMLTemplateScreen("ticket-tariff", "ticket-tariff.html");
-        this.screens[1] = new HTMLTemplateScreen("ticket-from", "ticket-from.html");
-        this.screens[2] = new HTMLTemplateScreen("ticket-to", "ticket-to.html");
-        this.screens[3] = new HTMLTemplateScreen("ticket", "ticket.html");
+        this.screens = new TextUIHTMLTemplateScreen[4];
+        this.screens[0] = new TextUIHTMLTemplateScreen("ticket-tariff", "ticket-tariff.html");
+        this.screens[1] = new TextUIHTMLTemplateScreen("ticket-from", "ticket-from.html");
+        this.screens[2] = new TextUIHTMLTemplateScreen("ticket-to", "ticket-to.html");
+        this.screens[3] = new TextUIHTMLTemplateScreen("ticket", "ticket.html");
         
-        this.helps[0] = new Help[2];
-        this.helps[0][0] = HelpFactory.CreateSimpleHelp("<jmeno nebo zkratka tarifu>", Color.YELLOW, "Jmeno nebo zkratka tarifu, podle ktereho se vypocita cena");
-        this.helps[0][1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps[0] = new ITextUIHelp[2];
+        this.helps[0][0] = TextUIHelpFactory.createSimpleHelp("<jmeno nebo zkratka tarifu>", Color.YELLOW, "Jmeno nebo zkratka tarifu, podle ktereho se vypocita cena");
+        this.helps[0][1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
         
-        this.helps[1] = new Help[2];
-        this.helps[1][0] = HelpFactory.CreateSimpleHelp("<jmeno nebo zkratka stanice>", Color.YELLOW, "Jmeno nebo zkratka vychozi stanice");
-        this.helps[1][1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps[1] = new ITextUIHelp[2];
+        this.helps[1][0] = TextUIHelpFactory.createSimpleHelp("<jmeno nebo zkratka stanice>", Color.YELLOW, "Jmeno nebo zkratka vychozi stanice");
+        this.helps[1][1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
         
-        this.helps[2] = new Help[2];
-        this.helps[2][0] = HelpFactory.CreateSimpleHelp("<jmeno nebo zkratka stanice>", Color.YELLOW, "Jmeno nebo zkratka cilove stanice");
-        this.helps[2][1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps[2] = new ITextUIHelp[2];
+        this.helps[2][0] = TextUIHelpFactory.createSimpleHelp("<jmeno nebo zkratka stanice>", Color.YELLOW, "Jmeno nebo zkratka cilove stanice");
+        this.helps[2][1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
         
-        this.helps[3] = new Help[2];
-        this.helps[3][0] = HelpFactory.CreateSimpleHelp("yes", Color.GREEN, "Ano, zadane udaje jsou v poradku");
-        this.helps[3][1] = HelpFactory.CreateSimpleHelp("no", Color.RED, "Zrusit");
+        this.helps[3] = new ITextUIHelp[2];
+        this.helps[3][0] = TextUIHelpFactory.createSimpleHelp("yes", Color.GREEN, "Ano, zadane udaje jsou v poradku");
+        this.helps[3][1] = TextUIHelpFactory.createSimpleHelp("no", Color.RED, "Zrusit");
     }
     
     @Override
@@ -172,21 +172,21 @@ public class Ticket extends State{
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
-        if (this.progress == 0) this.controller.ShowTariffsHelp();
-        else this.controller.ShowStationsHelp();
-        HTMLTemplateScreen reti = this.screens[this.progress];
+        if (this.progress == 0) this.controller.showTariffsHelp();
+        else this.controller.showStationsHelp();
+        TextUIHTMLTemplateScreen reti = this.screens[this.progress];
         reti.SetContent(this.ticketData);
         return reti;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
-        if (this.progress == 0) this.controller.ShowTariffsHelp();
-        else this.controller.ShowStationsHelp();
-        HTMLTemplateScreen reti = this.screens[this.progress];
+        if (this.progress == 0) this.controller.showTariffsHelp();
+        else this.controller.showStationsHelp();
+        TextUIHTMLTemplateScreen reti = this.screens[this.progress];
         this.ticketData.keySet().forEach(tD -> {
             data.put(tD, this.ticketData.get(tD));
         });
@@ -212,14 +212,14 @@ public class Ticket extends State{
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.length() > 0)
         {
             if (progress < 3 && input.toLowerCase().equals("cancel"))
             {
                 this.controller.HideHelp();
-                this.controller.ChangeState("welcome");
+                this.controller.changeState("welcome");
             }
             else
             {
@@ -229,7 +229,7 @@ public class Ticket extends State{
                         Tariff t = cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GetTariff(input);
                         if (t == null)
                         {
-                            this.controller.ShowError("Neznamy tarif '" + input + "'!");
+                            this.controller.showError("Neznamy tarif '" + input + "'!");
                         }
                         else
                         {
@@ -244,7 +244,7 @@ public class Ticket extends State{
                         Station s = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(input);
                         if (s == null)
                         {
-                            this.controller.ShowError("Neznama stanice '" + input + "'!");
+                            this.controller.showError("Neznama stanice '" + input + "'!");
                         }
                         else
                         {
@@ -264,7 +264,7 @@ public class Ticket extends State{
                         Station to = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(input);
                         if (to == null)
                         {
-                            this.controller.ShowError("Neznama stanice '" + input + "'!");
+                            this.controller.showError("Neznama stanice '" + input + "'!");
                         }
                         else
                         {
@@ -288,19 +288,19 @@ public class Ticket extends State{
                         if (input.toLowerCase().equals("no"))
                         {
                             this.controller.HideHelp();
-                            this.controller.ChangeState("welcome");
+                            this.controller.changeState("welcome");
                         }
                         else if (input.toLowerCase().equals("yes"))
                         {
                             this.GeneratePdf();
-                            this.controller.ShowSucess("Jizdenka s cislem " + this.ticketData.get("ticket_id") + " byla uspesne vytvorena.");
+                            this.controller.showSucess("Jizdenka s cislem " + this.ticketData.get("ticket_id") + " byla uspesne vytvorena.");
                             this.controller.HideHelp();
-                            this.controller.ChangeState("welcome");
-                            this.controller.ChangeState("ticket");
+                            this.controller.changeState("welcome");
+                            this.controller.changeState("ticket");
                         }
                         else
                         {
-                            this.controller.ShowError("Neznamy prikaz '" + input + "'!");
+                            this.controller.showError("Neznamy prikaz '" + input + "'!");
                         }
                         break;
                 }

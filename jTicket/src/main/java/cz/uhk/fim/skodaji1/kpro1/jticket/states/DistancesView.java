@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,54 +31,54 @@ import java.util.Map;
  * Class representing state of program which can display set distances between stations
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class DistancesView extends State
+public class DistancesView extends TextUIState
 {
 
     /**
      * Creates new state of program with viewer of set distances between stations
      * @param controller 
      */
-    public DistancesView(Controller controller)
+    public DistancesView(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/view";
-        this.screen = new HTMLTemplateScreen("distances", "distances.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances", "distances.html");
         this.name = "distances-view";
         this.strict = false;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<nazev nebo zkratka stanice>", Color.YELLOW, "Stanice pro zobrazeni vzdalenosti");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("back", Color.MAGENTA, "Zpet");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<nazev nebo zkratka stanice>", Color.YELLOW, "Stanice pro zobrazeni vzdalenosti");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("back", Color.MAGENTA, "Zpet");
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
 
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("back"))
         {
-            this.controller.ChangeState("distances");
+            this.controller.changeState("distances");
         }
         else
         {
             Station s = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(input);
             if (s == null)
             {
-                this.controller.ShowError("Neznama stanice '" + input + "'!");
+                this.controller.showError("Neznama stanice '" + input + "'!");
             }
             else
             {
                 Map<String, String> data = new HashMap<>();
                 data.put("station", s.GetAbbrevation());
-                this.controller.ChangeState("distances-view-station", data);
+                this.controller.changeState("distances-view-station", data);
             }
         }
     }

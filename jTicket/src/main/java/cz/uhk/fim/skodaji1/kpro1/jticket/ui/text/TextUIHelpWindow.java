@@ -16,10 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
-
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -43,12 +43,12 @@ public class TextUIHelpWindow extends JFrame
     /**
      * Screen containing list of all available stations
      */
-    private final HTMLTemplateScreen stations; 
+    private final TextUITextUIHTMLTemplateScreen stations; 
     
     /**
      * Screen containing list of all available tariffs
      */
-    private final HTMLTemplateScreen tariffs;
+    private final TextUITextUIHTMLTemplateScreen tariffs;
     
     /**
      * HTML string which will be added before any HTML document
@@ -73,9 +73,37 @@ public class TextUIHelpWindow extends JFrame
         this.scrollBar = new JScrollPane(this.content, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.getContentPane().add(this.scrollBar);
         
-        this.stations = new HTMLTemplateScreen("help-stations", "help-stations.html");
-        this.tariffs = new HTMLTemplateScreen("help-tariffs", "help-tariffs.html");
+        this.stations = new TextUITextUIHTMLTemplateScreen("help-stations", "help-stations.html");
+        this.tariffs = new TextUITextUIHTMLTemplateScreen("help-tariffs", "help-tariffs.html");
         
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }
+    
+    /**
+     * Shows tariffs in window
+     */
+    public void showTariffs()
+    {
+        Map<String, String> data = new HashMap<>();
+        data.put("tariffs_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GenerateTariffsTableRows());
+        this.tariffs.setContent(data);
+        String toDisplay = this.tariffs.getContent().replace("<head>", "<head>" + this.defaultHTML).replace("null", "");
+        this.content.setText(toDisplay);
+        this.content.setSelectionStart(0);
+        this.content.setSelectionEnd(0);
+    }
+    
+    /**
+     * Shows stations in window
+     */
+    public void showStations()
+    {
+        Map<String, String> data = new HashMap<>();
+        data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
+        this.stations.setContent(data);
+        String toDisplay = this.stations.getContent().replace("<head>", "<head>" + this.defaultHTML).replace("null", "");
+        this.content.setText(toDisplay);
+        this.content.setSelectionStart(0);
+        this.content.setSelectionEnd(0);
     }
 }

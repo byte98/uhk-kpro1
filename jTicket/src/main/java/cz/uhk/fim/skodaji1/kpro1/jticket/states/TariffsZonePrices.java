@@ -21,7 +21,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import java.util.Map;
  * Class representing creating new zone tariff (with setting prices to zones)
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class TariffsZonePrices extends State {
+public class TariffsZonePrices extends TextUIState {
 
     /**
      * Tariff which will be edited
@@ -52,32 +52,32 @@ public class TariffsZonePrices extends State {
      * Creates new dialog for creating new zone tariff (with setting prices to zones)
      * @param controller Controller of program
      */
-    public TariffsZonePrices(Controller controller)
+    public TariffsZonePrices(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
-        this.screen = new HTMLTemplateScreen("tariffs-zone-prices", "tariffs-zone-prices.html");
+        this.screen = new TextUIHTMLTemplateScreen("tariffs-zone-prices", "tariffs-zone-prices.html");
         this.name = "tariffs-zone-prices";
         this.strict = false;
         
-        this.helps = new Help[2];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<cele cislo>", Color.YELLOW, "Cena za projete zony");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
+        this.helps = new ITextUIHelp[2];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<cele cislo>", Color.YELLOW, "Cena za projete zony");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("cancel", Color.MAGENTA, "Zrusit");
     }
     
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("zones_count", Integer.toString(this.actZone));
         data.put("tariff_name", this.tariff.GetName());
         data.put("zones_prices", this.GetZonePrices());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public Screen GetScreen(Map<String, String> data)
+    public ITextUIScreen getScreen(Map<String, String> data)
     {
         if (this.tariff == null)
         {
@@ -109,7 +109,7 @@ public class TariffsZonePrices extends State {
         data.put("zones_count", Integer.toString(this.actZone));
         data.put("tariff_name", this.tariff.GetName());
         data.put("zones_prices", this.GetZonePrices());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
@@ -151,11 +151,11 @@ public class TariffsZonePrices extends State {
     }
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         if (input.toLowerCase().equals("cancel"))
         {
-            this.controller.ChangeState("tariffs");
+            this.controller.changeState("tariffs");
         }
         else if (this.CheckInt(input))
         {
@@ -163,12 +163,12 @@ public class TariffsZonePrices extends State {
             if (price >= 0)
             {
                 this.tariff.SetPrice(this.actZone, price);
-                this.controller.ShowSucess("Cena pro " + this.actZone + " zony byla nastavena.");
+                this.controller.showSucess("Cena pro " + this.actZone + " zony byla nastavena.");
                 this.actZone++;
                 if (this.actZone > this.maxZone)
                 {
-                    this.controller.ShowSucess("Ceny pro vsechny zony byly uspesne nastaveny!");
-                    this.controller.ChangeState("tariffs");
+                    this.controller.showSucess("Ceny pro vsechny zony byly uspesne nastaveny!");
+                    this.controller.changeState("tariffs");
                 }
                 else
                 {
@@ -177,12 +177,12 @@ public class TariffsZonePrices extends State {
             }
             else
             {
-                this.controller.ShowError("Cislo zony musi byt nezaporne cislo!");
+                this.controller.showError("Cislo zony musi byt nezaporne cislo!");
             }
         }
         else
         {
-            this.controller.ShowError("Neznamy prikaz '" + input + "'!");
+            this.controller.showError("Neznamy prikaz '" + input + "'!");
         }
     }
     

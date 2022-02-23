@@ -22,7 +22,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.TariffType;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
 import java.awt.Color;
 import java.util.HashMap;
@@ -32,49 +32,49 @@ import java.util.Map;
  * Class representing tariffs menu
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public class Tariffs extends State {
+public class Tariffs extends TextUIState {
 
     /**
      * Creates new tariffs menu
      * @param controller Controller of program
      */
-    public Tariffs(Controller controller)
+    public Tariffs(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs";
-        this.screen = new HTMLTemplateScreen("tariffs", "tariffs.html");
+        this.screen = new TextUIHTMLTemplateScreen("tariffs", "tariffs.html");
         this.name = "tariffs";
         this.strict = false;
         
-        this.helps = new Help[4];
-        this.helps[0] = HelpFactory.CreateSimpleHelp("<jmeno nebo zkratka tarifu>", Color.YELLOW, "Rezim prohlizeni tarifu");
-        this.helps[1] = HelpFactory.CreateSimpleHelp("zone", Color.YELLOW, "Vytvorit novy zonovy tarif");
-        this.helps[2] = HelpFactory.CreateSimpleHelp("distance", Color.YELLOW, "Vytvorit novy vzdalenostni tarif");
-        this.helps[3] = HelpFactory.CreateSimpleHelp("back", Color.MAGENTA, "Zpet");
+        this.helps = new ITextUIHelp[4];
+        this.helps[0] = TextUIHelpFactory.createSimpleHelp("<jmeno nebo zkratka tarifu>", Color.YELLOW, "Rezim prohlizeni tarifu");
+        this.helps[1] = TextUIHelpFactory.createSimpleHelp("zone", Color.YELLOW, "Vytvorit novy zonovy tarif");
+        this.helps[2] = TextUIHelpFactory.createSimpleHelp("distance", Color.YELLOW, "Vytvorit novy vzdalenostni tarif");
+        this.helps[3] = TextUIHelpFactory.createSimpleHelp("back", Color.MAGENTA, "Zpet");
     }
 
     @Override
-    public Screen GetScreen()
+    public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
         data.put("tariffs_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GenerateTariffsTableRows());
-        ((HTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
         return this.screen;
     }
     
     @Override
-    public void HandleInput(String input)
+    public void handleInput(String input)
     {
         switch (input.toLowerCase())
         {
             case "back":
-                this.controller.ChangeState("data");
+                this.controller.changeState("data");
                 break;
             case "zone":
-                this.controller.ChangeState("tariffs-zone-name");
+                this.controller.changeState("tariffs-zone-name");
                 break;
             case "distance":
-                this.controller.ChangeState("tariffs-dist-name");
+                this.controller.changeState("tariffs-dist-name");
                 break;
             default:
                 Tariff t = cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GetTariff(input);
@@ -84,7 +84,7 @@ public class Tariffs extends State {
                 }
                 else if (t == null)
                 {
-                    this.controller.ShowError("Neznamy prikaz '" + input + "'!");
+                    this.controller.showError("Neznamy prikaz '" + input + "'!");
                 }
                 else
                 {
@@ -92,11 +92,11 @@ public class Tariffs extends State {
                     data.put("tariff_abbr", t.GetAbbr());
                     if (t.GetType() == TariffType.ZONE)
                     {
-                        this.controller.ChangeState("tariffs-zone-view", data);
+                        this.controller.changeState("tariffs-zone-view", data);
                     }   
                     else if (t.GetType() == TariffType.DISTANCE)
                     {
-                        this.controller.ChangeState("tariffs-dist-view", data);
+                        this.controller.changeState("tariffs-dist-view", data);
                     }
                 }
                 break;
