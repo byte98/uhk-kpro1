@@ -17,14 +17,13 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.DistanceTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +58,7 @@ public class TextUITariffsDistPrices extends TextUIState {
      * Creates new dialog for creating new distance tariff (with setting prices to distances)
      * @param controller Controller of program
      */
-    public TariffsDistPrices(TextUIController controller)
+    public TextUITariffsDistPrices(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
@@ -77,9 +76,9 @@ public class TextUITariffsDistPrices extends TextUIState {
     {
         Map<String, String> data = new HashMap<>();
         data.put("distance_act", Integer.toString(this.actDistance));
-        data.put("tariff_name", this.tariff.GetName());
+        data.put("tariff_name", this.tariff.getName());
         data.put("distance_prices", this.tariff.GeneratePriceListRows(this.minDistance, this.maxDistance));
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -120,9 +119,9 @@ public class TextUITariffsDistPrices extends TextUIState {
         }
         
         data.put("distance_act", Integer.toString(this.actDistance));
-        data.put("tariff_name", this.tariff.GetName());
+        data.put("tariff_name", this.tariff.getName());
         data.put("distance_prices", this.tariff.GeneratePriceListRows(this.minDistance, this.maxDistance));
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -132,7 +131,7 @@ public class TextUITariffsDistPrices extends TextUIState {
      * @return <code>TRUE</code> if input contains integer only, <code>FALSE</code> otherwise
      * @author Jonas K https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
      */
-    private boolean CheckInt(String input)
+    private boolean checkInt(String input)
     {
         if (input == null)
         {
@@ -170,7 +169,7 @@ public class TextUITariffsDistPrices extends TextUIState {
         {
             this.controller.changeState("tariffs");
         }
-        else if (this.CheckInt(input))
+        else if (this.checkInt(input))
         {
             int price = Integer.parseInt(input);
             if (price >= 0)
@@ -178,10 +177,10 @@ public class TextUITariffsDistPrices extends TextUIState {
                 this.tariff.SetPrice(this.actDistance, Integer.parseInt(input));
                 this.controller.showSucess("Cena pro vzdalenost " + this.actDistance + " km nastavena.");
                 this.actDistance++;
-                this.controller.ReDraw();
+                this.controller.reDraw();
                 if (this.actDistance > this.maxDistance)
                 {
-                    this.controller.showSucess("Cenik tarifu '" + this.tariff.GetName() + "' byl uspesne vytvoren.");
+                    this.controller.showSucess("Cenik tarifu '" + this.tariff.getName() + "' byl uspesne vytvoren.");
                     this.controller.changeState("tariffs");
                 }
                 

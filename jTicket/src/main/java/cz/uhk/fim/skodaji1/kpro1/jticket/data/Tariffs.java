@@ -100,9 +100,9 @@ public class Tariffs {
         for (Tariff t: this.GetAllTariffs())
         {
             sb.append("<tr><td style='color: blue;'>");
-            sb.append(t.GetAbbr());
+            sb.append(t.getAbbr());
             sb.append("</td><td>");
-            sb.append(t.GetName());
+            sb.append(t.getName());
             sb.append("</td><td style='color: green;'>");
             sb.append(t.GetType() == TariffType.DISTANCE ? "VZDALENOSTNI" : (t.GetType() == TariffType.ZONE ? "ZONOVY" : "N/A"));
             sb.append("</td></tr>");                
@@ -122,7 +122,7 @@ public class Tariffs {
         while (it.hasNext())
         {
             Tariff t = it.next();
-            if (t != null && t.GetName().toLowerCase().equals(name.toLowerCase()))
+            if (t != null && t.getName().toLowerCase().equals(name.toLowerCase()))
             {
                 reti = t;
                 break;
@@ -143,7 +143,7 @@ public class Tariffs {
         while (it.hasNext())
         {
             Tariff t = it.next();
-            if (t != null && t.GetAbbr().toLowerCase().equals(abbr.toLowerCase()))
+            if (t != null && t.getAbbr().toLowerCase().equals(abbr.toLowerCase()))
             {
                 reti = t;
                 break;
@@ -179,7 +179,7 @@ public class Tariffs {
             Tariff t = it.next();
             if (t != null)
             {
-                output += t.GetAbbr() + "," + t.GetName() + "," + (t.GetType() == TariffType.ZONE ? "Z" : "D") + "\n";
+                output += t.getAbbr() + "," + t.getName() + "," + (t.GetType() == TariffType.ZONE ? "Z" : "D") + "\n";
             }
         }
         try

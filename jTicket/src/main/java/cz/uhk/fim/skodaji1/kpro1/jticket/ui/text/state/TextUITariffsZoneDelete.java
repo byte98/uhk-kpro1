@@ -17,13 +17,12 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class TextUITariffsZoneDelete extends TextUIState {
      * Creates new tariff viewer for zone tariffs (with deleting dialog)
      * @param controller Controller of program
      */
-    public TariffsZoneDelete(TextUIController controller)
+    public TextUITariffsZoneDelete(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
@@ -62,12 +61,12 @@ public class TextUITariffsZoneDelete extends TextUIState {
         this.tariff =(ZoneTariff) cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GetTariff(data.get("tariff_abbr"));
         if (tariff != null)
         {
-            data.put("tariff_name", this.tariff.GetName());
-            data.put("tariff_zones", this.tariff.GenerateZonesTr());
-            data.put("tariff_prices", this.GetTariffPrices());
-            this.commandPrefix = "/data/tariffs/" + this.tariff.GetAbbr().toLowerCase() + "/delete?";
+            data.put("tariff_name", this.tariff.getName());
+            data.put("tariff_zones", this.tariff.generateZonesTr());
+            data.put("tariff_prices", this.getTariffPrices());
+            this.commandPrefix = "/data/tariffs/" + this.tariff.getAbbr().toLowerCase() + "/delete?";
         }
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -78,11 +77,11 @@ public class TextUITariffsZoneDelete extends TextUIState {
         {
             case "no": 
                 Map<String, String> data = new HashMap<>();
-                data.put("tariff_abbr", this.tariff.GetAbbr());
+                data.put("tariff_abbr", this.tariff.getAbbr());
                 this.controller.changeState("tariffs-zone-view"); 
                 break;
             case "yes":
-                String tarifName = this.tariff.GetName();
+                String tarifName = this.tariff.getName();
                 cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().RemoveTariff(this.tariff);
                 this.controller.showSucess("Tarif '" + tarifName + "' byl uspesne odebran.");
                 this.controller.changeState("tariffs");
@@ -94,7 +93,7 @@ public class TextUITariffsZoneDelete extends TextUIState {
      * Gets table rows with tariff row prices
      * @return 
      */
-    private String GetTariffPrices()
+    private String getTariffPrices()
     {
         String reti = new String();
         reti = this.tariff.GetAllPrices().keySet().stream().map(zone -> "<tr><td>" + zone + "</td><td style='color: white;'>" + this.tariff.GetAllPrices().get(zone) + " Kc</td></tr").reduce(reti, String::concat);

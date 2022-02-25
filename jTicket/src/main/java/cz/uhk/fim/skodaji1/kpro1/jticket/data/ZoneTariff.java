@@ -17,7 +17,6 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.data;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -184,7 +183,7 @@ public class ZoneTariff extends Tariff{
      * @param st Station to which zone ill be assigned to
      * @param zone Zone which will be assigned to station
      */
-    public void SetZone(Station st, int zone)
+    public void setZone(Station st, int zone)
     {
         this.zones.put(st, zone);
         this.SaveZones();
@@ -194,12 +193,12 @@ public class ZoneTariff extends Tariff{
      * Generates string with HTML table rows containing zone for each station
      * @return String with HTML table rows containing zone for each station
      */
-    public String GenerateZonesTr()
+    public String generateZonesTr()
     {
         String reti = new String();
         for (Station st: cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetAllStations())
         {
-            reti += "<tr><td style='color: green;'>" + st.GetAbbrevation().toUpperCase() + "</td><td>" + st.GetName() + "</td><td style='color: white;'>" + (this.zones.get(st) == null ? "0" : this.zones.get(st)) + "</td></tr>";
+            reti += "<tr><td style='color: green;'>" + st.getAbbrevation().toUpperCase() + "</td><td>" + st.getName() + "</td><td style='color: white;'>" + (this.zones.get(st) == null ? "0" : this.zones.get(st)) + "</td></tr>";
         }
         return reti;
     }

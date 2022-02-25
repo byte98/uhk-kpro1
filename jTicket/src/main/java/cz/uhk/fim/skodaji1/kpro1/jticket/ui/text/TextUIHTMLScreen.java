@@ -17,7 +17,6 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.HTMLScreen;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -63,7 +62,7 @@ public class TextUIHTMLScreen implements ITextUIScreen
         {
             try
             {
-                File html = new File("resources/textui/" + this.fileName);
+                File html = new File(TextUI.HTML_DIR + this.fileName);
                 Scanner reader = new Scanner(html);
                 while (reader.hasNextLine())
                 {
@@ -73,7 +72,7 @@ public class TextUIHTMLScreen implements ITextUIScreen
             }
             catch (FileNotFoundException ex)
             {
-                Logger.getLogger(HTMLScreen.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TextUIHTMLScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return this.content;        
@@ -85,3 +84,4 @@ public class TextUIHTMLScreen implements ITextUIScreen
         return this.name;
     }
 }
+    

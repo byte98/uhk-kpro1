@@ -17,13 +17,13 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.TariffType;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class TextUITariffs extends TextUIState {
      * Creates new tariffs menu
      * @param controller Controller of program
      */
-    public Tariffs(TextUIController controller)
+    public TextUITariffs(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs";
@@ -58,7 +58,7 @@ public class TextUITariffs extends TextUIState {
     {
         Map<String, String> data = new HashMap<>();
         data.put("tariffs_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GenerateTariffsTableRows());
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -89,7 +89,7 @@ public class TextUITariffs extends TextUIState {
                 else
                 {
                     Map<String, String> data = new HashMap<>();
-                    data.put("tariff_abbr", t.GetAbbr());
+                    data.put("tariff_abbr", t.getAbbr());
                     if (t.GetType() == TariffType.ZONE)
                     {
                         this.controller.changeState("tariffs-zone-view", data);

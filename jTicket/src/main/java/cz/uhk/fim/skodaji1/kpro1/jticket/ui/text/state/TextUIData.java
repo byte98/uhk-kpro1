@@ -17,17 +17,15 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUITextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -52,7 +50,7 @@ public class TextUIData extends TextUIState {
     {
         super(controller);
         this.commandPrefix = "/data";
-        this.screen = new TextUITextUIHTMLTemplateScreen("data", "data.html");
+        this.screen = new TextUIHTMLTemplateScreen("data", "data.html");
         this.name = "data";
         
         this.helps = new ITextUIHelp[4];
@@ -76,7 +74,7 @@ public class TextUIData extends TextUIState {
             Station st = it.next();
             if (st != null)
             {
-                stString += st.GetName();
+                stString += st.getName();
                 if (idx < stations.size() - 1)
                 {
                     stString += ",";
@@ -84,7 +82,7 @@ public class TextUIData extends TextUIState {
             } 
             idx++;
         }
-        stString = Controller.TrimString(stString, 128);
+        stString = TextUIController.trimString(stString, 128);
         data.put("station_list", stString);
         
         String distString = new String();
@@ -101,10 +99,10 @@ public class TextUIData extends TextUIState {
                 Station from = sts[f];
                 int t = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, sts.length);
                 Station to = sts[t];
-                distString += "[" + from.GetAbbrevation() + " -> " + to.GetAbbrevation() + ": " + Distances.GetInstance().GetDistance(from, to) + " km] ";
+                distString += "[" + from.getAbbrevation() + " -> " + to.getAbbrevation() + ": " + Distances.GetInstance().GetDistance(from, to) + " km] ";
             }
         }
-        data.put("distances_list", Controller.TrimString(distString, 128));
+        data.put("distances_list", TextUIController.trimString(distString, 128));
         
         String tariffsString = new String();
         Tariff Ts[] = Tariffs.GetInstance().GetAllTariffs();
@@ -117,12 +115,12 @@ public class TextUIData extends TextUIState {
             else
             {
                 int Ti = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, Ts.length);
-                tariffsString += Ts[Ti].GetName() + ", ";
+                tariffsString += Ts[Ti].getName() + ", ";
             }
         }
-        data.put("tariffs_list", Controller.TrimString(tariffsString, 128));
+        data.put("tariffs_list", TextUIController.trimString(tariffsString, 128));
         
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     

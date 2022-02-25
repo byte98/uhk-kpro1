@@ -67,7 +67,7 @@ public class Station {
      * Gets name of the station
      * @return Name of the station
      */
-    public String GetName()
+    public String getName()
     {
         return this.name;
     }
@@ -76,7 +76,7 @@ public class Station {
      * Gets abbrevation for the station
      * @return Abbrevation for the station
      */
-    public String GetAbbrevation()
+    public String getAbbrevation()
     {
         return this.abbrevation;
     }

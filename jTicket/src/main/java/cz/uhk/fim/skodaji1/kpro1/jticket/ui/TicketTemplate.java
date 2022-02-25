@@ -17,7 +17,6 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.states.Ticket;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -234,11 +233,11 @@ public class TicketTemplate
         }
         catch (IOException ex)
         {
-            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TicketTemplate.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         this.fields.forEach(field -> {
-            this.WriteTextToPage(
+            this.writeTextToPage(
                     doc,
                     page,
                     field.getContent(),
@@ -273,7 +272,7 @@ public class TicketTemplate
      * @param left Left position of text
      * @param maxLength Maximal length of row
      */
-    private void WriteTextToPage(PDDocument document, PDPage page, String text, PDType1Font fontFamily, int fontSize, int top, int left, int maxLength)
+    private void writeTextToPage(PDDocument document, PDPage page, String text, PDType1Font fontFamily, int fontSize, int top, int left, int maxLength)
     {
         if (text.length() > maxLength)
         {
@@ -306,7 +305,7 @@ public class TicketTemplate
             int idx = 0;
             while (it.hasNext())
             {
-                this.WriteTextToPage(document, page, it.next(), fontFamily, fontSize, top - (idx * fontSize), left, Integer.MAX_VALUE);
+                this.writeTextToPage(document, page, it.next(), fontFamily, fontSize, top - (idx * fontSize), left, Integer.MAX_VALUE);
                 idx++;
             }
         }

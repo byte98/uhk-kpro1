@@ -19,6 +19,7 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
  * Class representing screen which content is in HTML and there is data which will be displayed
  * @author Jiri Skoda <jiri.skoda@student.upce.cz>
  */
-public class TextUITextUIHTMLTemplateScreen extends TextUIHTMLScreen
+public class TextUIHTMLTemplateScreen extends TextUIHTMLScreen
 {
     /**
      * Original content of HTML file with template
@@ -40,7 +41,7 @@ public class TextUITextUIHTMLTemplateScreen extends TextUIHTMLScreen
      * @param name Name of screen
      * @param fileName File with screen content
      */
-    public TextUITextUIHTMLTemplateScreen(String name, String fileName)
+    public TextUIHTMLTemplateScreen(String name, String fileName)
     {
         super(name, fileName);
     }
@@ -55,7 +56,7 @@ public class TextUITextUIHTMLTemplateScreen extends TextUIHTMLScreen
         {         
             try
             {
-                File html = new File("resources/" + this.fileName);
+                File html = new File(TextUI.HTML_DIR + this.fileName);
                 Scanner reader = new Scanner(html);
                 while (reader.hasNextLine())
                 {
@@ -65,7 +66,7 @@ public class TextUITextUIHTMLTemplateScreen extends TextUIHTMLScreen
             }
             catch (FileNotFoundException ex)
             {
-                Logger.getLogger(TextUITextUIHTMLTemplateScreen.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TextUIHTMLTemplateScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         this.content = this.originalContent;
@@ -81,7 +82,7 @@ public class TextUITextUIHTMLTemplateScreen extends TextUIHTMLScreen
         {
             try
             {
-                File html = new File("resources/" + this.fileName);
+                File html = new File(TextUI.HTML_DIR + this.fileName);
                 Scanner reader = new Scanner(html);
                 while (reader.hasNextLine())
                 {
@@ -92,7 +93,7 @@ public class TextUITextUIHTMLTemplateScreen extends TextUIHTMLScreen
             }
             catch (FileNotFoundException ex)
             {
-                Logger.getLogger(TextUITextUIHTMLTemplateScreen.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TextUIHTMLTemplateScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return this.content;

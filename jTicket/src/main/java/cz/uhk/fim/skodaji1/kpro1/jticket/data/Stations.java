@@ -117,7 +117,7 @@ public class Stations {
                 Station s = it.next();
                 if (s != null)
                 {
-                    String output = s.GetIdentifier() + "," + s.GetAbbrevation() + "," + s.GetName() + "\n";
+                    String output = s.GetIdentifier() + "," + s.getAbbrevation() + "," + s.getName() + "\n";
                     fw.append(output);
                 }
             }
@@ -164,7 +164,7 @@ public class Stations {
         while (it.hasNext())
         {
             Station s = it.next();
-            if (s != null && s.GetName().toLowerCase().equals(name.toLowerCase()))
+            if (s != null && s.getName().toLowerCase().equals(name.toLowerCase()))
             {
                 reti = s;
                 break;
@@ -185,7 +185,7 @@ public class Stations {
         while (it.hasNext())
         {
             Station s = it.next();
-            if (s != null && s.GetAbbrevation().toLowerCase().equals(abbr.toLowerCase()))
+            if (s != null && s.getAbbrevation().toLowerCase().equals(abbr.toLowerCase()))
             {
                 reti = s;
                 break;
@@ -259,10 +259,10 @@ public class Stations {
     public String AddStation(Station st)
     {
         String reti = null;
-        Station s = this.GetStationByName(st.GetName());
+        Station s = this.GetStationByName(st.getName());
         if (s == null) // Unused name
         {
-            s = this.GetStationByAbbrevation(st.GetAbbrevation());
+            s = this.GetStationByAbbrevation(st.getAbbrevation());
             if (s == null) // Unused abbrevation
             {
                 int newId;
@@ -309,7 +309,7 @@ public class Stations {
             @Override
             public int compare(Station s1, Station s2)
             {
-                return s1.GetName().toLowerCase().compareTo(s2.GetName().toLowerCase());
+                return s1.getName().toLowerCase().compareTo(s2.getName().toLowerCase());
             }            
         });
         return reti;
@@ -329,7 +329,7 @@ public class Stations {
             Station s = it.next();
             if (s != null)
             {
-                if (s.GetAbbrevation().toLowerCase().equals(abbr.toLowerCase()))
+                if (s.getAbbrevation().toLowerCase().equals(abbr.toLowerCase()))
                 {
                     reti = false;
                     break;
@@ -353,7 +353,7 @@ public class Stations {
             Station s = it.next();
             if (s != null)
             {
-                if (s.GetName().toLowerCase().equals(name.toLowerCase()))
+                if (s.getName().toLowerCase().equals(name.toLowerCase()))
                 {
                     reti = false;
                     break;
@@ -373,9 +373,9 @@ public class Stations {
         for (Station s : this.GetAllStations())
         {
             sb.append("<tr><td style='color: green;'>");
-            sb.append(s.GetAbbrevation().toUpperCase());
+            sb.append(s.getAbbrevation().toUpperCase());
             sb.append("</td><td>");
-            sb.append(s.GetName());
+            sb.append(s.getName());
             sb.append("</td></tr>");
         }
         return sb.toString();

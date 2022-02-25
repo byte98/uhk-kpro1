@@ -72,6 +72,8 @@ public class TextUIController
     
     /**
      * Gets controller of program
+     * @param mainWindow Main window of program
+     * @param helpWindow Window with helps
      * @return Controller of program
      */
     public static TextUIController getController()
@@ -83,6 +85,17 @@ public class TextUIController
             reti = TextUIController.instance;
         }
         return reti;
+    }
+    
+    /**
+     * Sets windows to be controlled by controller
+     * @param mainWindow Main window of program
+     * @param helpWindow Window with help
+     */
+    public void setWindows(TextUIMainWindow mainWindow, TextUIHelpWindow helpWindow)
+    {
+        this.mainWindow = mainWindow;
+        this.helpWindow = helpWindow;
     }
     
     /**

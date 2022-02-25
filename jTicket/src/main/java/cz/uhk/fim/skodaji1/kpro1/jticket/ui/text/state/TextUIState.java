@@ -20,7 +20,7 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUITextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import java.util.Map;
 
 /**
@@ -104,9 +104,9 @@ public abstract class TextUIState
     public ITextUIScreen getScreen(Map<String, String> data)
     {
         ITextUIScreen reti = this.screen;
-        if (data != null && this.screen instanceof TextUITextUIHTMLTemplateScreen)
+        if (data != null && this.screen instanceof TextUIHTMLTemplateScreen)
         {
-            TextUITextUIHTMLTemplateScreen actualScreen = (TextUITextUIHTMLTemplateScreen)this.screen;
+            TextUIHTMLTemplateScreen actualScreen = (TextUIHTMLTemplateScreen)this.screen;
             actualScreen.setContent(data);
             reti = actualScreen;
         }

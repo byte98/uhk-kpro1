@@ -43,12 +43,12 @@ public class TextUIHelpWindow extends JFrame
     /**
      * Screen containing list of all available stations
      */
-    private final TextUITextUIHTMLTemplateScreen stations; 
+    private final TextUIHTMLTemplateScreen stations; 
     
     /**
      * Screen containing list of all available tariffs
      */
-    private final TextUITextUIHTMLTemplateScreen tariffs;
+    private final TextUIHTMLTemplateScreen tariffs;
     
     /**
      * HTML string which will be added before any HTML document
@@ -73,8 +73,8 @@ public class TextUIHelpWindow extends JFrame
         this.scrollBar = new JScrollPane(this.content, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.getContentPane().add(this.scrollBar);
         
-        this.stations = new TextUITextUIHTMLTemplateScreen("help-stations", "help-stations.html");
-        this.tariffs = new TextUITextUIHTMLTemplateScreen("help-tariffs", "help-tariffs.html");
+        this.stations = new TextUIHTMLTemplateScreen("help-stations", "help-stations.html");
+        this.tariffs = new TextUIHTMLTemplateScreen("help-tariffs", "help-tariffs.html");
         
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }

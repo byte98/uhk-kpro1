@@ -17,12 +17,12 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class TextUITariffsZoneAbbr extends TextUIState {
      * Creates new dialog for creating new zone tariff (with abbreavation selected)
      * @param controller Controller of program
      */
-    public TariffsZoneAbbr(TextUIController controller)
+    public TextUITariffsZoneAbbr(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/zone:abbr";
@@ -60,7 +60,7 @@ public class TextUITariffsZoneAbbr extends TextUIState {
     {
         Map<String, String> data = new HashMap<>();
         data.put("tariffs_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GenerateTariffsTableRows());
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -69,7 +69,7 @@ public class TextUITariffsZoneAbbr extends TextUIState {
     {
         data.put("tariffs_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().GenerateTariffsTableRows());
         this.tariffName = data.get("tariff_name");
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     

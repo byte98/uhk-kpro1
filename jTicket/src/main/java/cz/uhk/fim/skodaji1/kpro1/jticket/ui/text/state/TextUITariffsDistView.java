@@ -17,15 +17,13 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.DistanceTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +43,7 @@ public class TextUITariffsDistView extends TextUIState {
      * Creates new tariff viewer for distance tariffs
      * @param controller Controller of program
      */
-    public TariffsDistView(TextUIController controller)
+    public TextUITariffsDistView(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
@@ -88,11 +86,11 @@ public class TextUITariffsDistView extends TextUIState {
                     }
                 }
             }
-            data.put("tariff_name", this.tariff.GetName());
+            data.put("tariff_name", this.tariff.getName());
             data.put("tariff_prices", this.tariff.GeneratePriceListRows(min, max));
-            this.commandPrefix = "/data/tariffs/" + this.tariff.GetAbbr().toLowerCase();
+            this.commandPrefix = "/data/tariffs/" + this.tariff.getAbbr().toLowerCase();
         }
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -104,7 +102,7 @@ public class TextUITariffsDistView extends TextUIState {
             case "back": this.controller.changeState("tariffs"); break;
             case "delete": 
                 Map<String, String> data = new HashMap<>();
-                data.put("tariff_abbr", this.tariff.GetAbbr());
+                data.put("tariff_abbr", this.tariff.getAbbr());
                 this.controller.changeState("tariffs-dist-delete", data); 
                 break;
         }

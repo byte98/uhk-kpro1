@@ -22,7 +22,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUITextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
@@ -58,7 +58,7 @@ public class TextUIDistancesCreate extends TextUIState
     {
         super(controller);
         this.commandPrefix = "/data/distances/create";
-        this.screen = new TextUITextUIHTMLTemplateScreen("distances-create", "distances-create.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances-create", "distances-create.html");
         this.name = "distances-create";
         this.strict = false;
         
@@ -124,9 +124,9 @@ public class TextUIDistancesCreate extends TextUIState
         {
             Map<String, String> data = new HashMap<>();
             data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(this.stations[this.origin]));
-            data.put("station_from", this.stations[this.origin].GetName());
-            data.put("station_to", this.stations[this.destination].GetName());
-            ((TextUITextUIHTMLTemplateScreen) this.screen).setContent(data);
+            data.put("station_from", this.stations[this.origin].getName());
+            data.put("station_to", this.stations[this.destination].getName());
+            ((TextUIHTMLTemplateScreen) this.screen).setContent(data);
         }
         return this.screen;
     }
@@ -137,9 +137,9 @@ public class TextUIDistancesCreate extends TextUIState
         if (this.stations.length > 1)
         {
             data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(this.stations[this.origin]));
-            data.put("station_from", this.stations[this.origin].GetName());
-            data.put("station_to", this.stations[this.destination].GetName());
-            ((TextUITextUIHTMLTemplateScreen) this.screen).setContent(data);
+            data.put("station_from", this.stations[this.origin].getName());
+            data.put("station_to", this.stations[this.destination].getName());
+            ((TextUIHTMLTemplateScreen) this.screen).setContent(data);
         }
         return this.screen;
     }

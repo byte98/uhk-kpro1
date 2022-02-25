@@ -17,11 +17,10 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUITextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
@@ -42,7 +41,7 @@ public class TextUIDistances extends TextUIState
     {
         super(controller);
         this.commandPrefix = "/data/distances";
-        this.screen = new TextUITextUIHTMLTemplateScreen("distances", "distances.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances", "distances.html");
         this.name = "distances";
         this.strict = true;
         
@@ -58,7 +57,7 @@ public class TextUIDistances extends TextUIState
     {
         Map<String, String> data = new HashMap<>();
         data.put("stations_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GenerateTableRows());
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
 

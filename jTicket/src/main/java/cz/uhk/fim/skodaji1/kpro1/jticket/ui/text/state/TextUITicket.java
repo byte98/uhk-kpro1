@@ -17,15 +17,15 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.TariffType;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -74,7 +74,7 @@ public class TextUITicket extends TextUIState{
     /**
      * Array with helps to each state of filling ticket data
      */
-    private Help[][] helps;
+    private ITextUIHelp[][] helps;
     
     /**
      * Tariff which calculates tickets price
@@ -100,7 +100,7 @@ public class TextUITicket extends TextUIState{
      * Creates new state of ticket selling
      * @param controller Controller of program
      */
-    public Ticket(TextUIController controller)
+    public TextUITicket(TextUIController controller)
     {
         super(controller);
         this.ticketData = new HashMap<>();
@@ -133,11 +133,11 @@ public class TextUITicket extends TextUIState{
     }
     
     @Override
-    public void Load()
+    public void load()
     {
         // Fill information about tickets with white spaces
         this.ticketData.put("ticket_tariff", " ");
-        this.ticketData.put("ticket_id", this.GenerateTicketId());
+        this.ticketData.put("ticket_id", this.generateTicketId());
         this.ticketData.put("ticket_from", " ");
         this.ticketData.put("ticket_to", " ");
         Date date = new Date();
@@ -166,7 +166,7 @@ public class TextUITicket extends TextUIState{
     }
     
     @Override
-    public Help[] GetHelps()
+    public ITextUIHelp[] getHelps()
     {
         return this.helps[this.progress];
     }
@@ -177,7 +177,7 @@ public class TextUITicket extends TextUIState{
         if (this.progress == 0) this.controller.showTariffsHelp();
         else this.controller.showStationsHelp();
         TextUIHTMLTemplateScreen reti = this.screens[this.progress];
-        reti.SetContent(this.ticketData);
+        reti.setContent(this.ticketData);
         return reti;
     }
     
@@ -190,7 +190,7 @@ public class TextUITicket extends TextUIState{
         this.ticketData.keySet().forEach(tD -> {
             data.put(tD, this.ticketData.get(tD));
         });
-        reti.SetContent(data);
+        reti.setContent(data);
         return reti;
     }
     
@@ -198,7 +198,7 @@ public class TextUITicket extends TextUIState{
      * Generates new unused identifier for ticket
      * @return New unique identifier for ticket
      */
-    private String GenerateTicketId()
+    private String generateTicketId()
     {
         String reti = new String();
         int number = 0;
@@ -218,7 +218,7 @@ public class TextUITicket extends TextUIState{
         {
             if (progress < 3 && input.toLowerCase().equals("cancel"))
             {
-                this.controller.HideHelp();
+                this.controller.hideHelp();
                 this.controller.changeState("welcome");
             }
             else
@@ -234,10 +234,10 @@ public class TextUITicket extends TextUIState{
                         else
                         {
                             this.tariff = t;
-                            this.ticketData.put("ticket_tariff", t.GetName());
+                            this.ticketData.put("ticket_tariff", t.getName());
                             this.commandPrefix = "/ticket:from";
                             this.progress++;
-                            this.controller.ReDraw();
+                            this.controller.reDraw();
                         }
                         break;
                     case 1:
@@ -252,12 +252,12 @@ public class TextUITicket extends TextUIState{
                             if (this.tariff.GetType() == TariffType.ZONE)
                             {
                                 ZoneTariff zt = (ZoneTariff) this.tariff;
-                                this.ticketData.put("ticket_from", s.GetName() + " (" + zt.GetZone(s) + ")");
+                                this.ticketData.put("ticket_from", s.getName() + " (" + zt.GetZone(s) + ")");
                             }
-                            else this.ticketData.put("ticket_from", s.GetName());
+                            else this.ticketData.put("ticket_from", s.getName());
                             this.commandPrefix = "/ticket:to";
                             this.progress++;
-                            this.controller.ReDraw();
+                            this.controller.reDraw();
                         }
                         break;
                     case 2:
@@ -273,28 +273,28 @@ public class TextUITicket extends TextUIState{
                             if (this.tariff.GetType() == TariffType.ZONE)
                             {
                                 ZoneTariff zt = (ZoneTariff) this.tariff;
-                                this.ticketData.put("ticket_to", to.GetName() + " (" + zt.GetZone(to) + ")");
+                                this.ticketData.put("ticket_to", to.getName() + " (" + zt.GetZone(to) + ")");
                                 distance += " (pocet zon: " + (Math.abs(zt.GetZone(this.origin) - zt.GetZone(this.destination)) + 1) + ")";
                             }
-                            else this.ticketData.put("ticket_to", to.GetName());
+                            else this.ticketData.put("ticket_to", to.getName());
                             this.ticketData.put("ticket_distance", distance);
                             this.ticketData.put("ticket_price", String.valueOf(this.tariff.GetPrice(this.origin, this.destination)));
                             this.commandPrefix = "/ticket?";
                             this.progress++;
-                            this.controller.ReDraw();
+                            this.controller.reDraw();
                         }
                         break;
                     case 3:
                         if (input.toLowerCase().equals("no"))
                         {
-                            this.controller.HideHelp();
+                            this.controller.hideHelp();
                             this.controller.changeState("welcome");
                         }
                         else if (input.toLowerCase().equals("yes"))
                         {
-                            this.GeneratePdf();
+                            this.generatePdf();
                             this.controller.showSucess("Jizdenka s cislem " + this.ticketData.get("ticket_id") + " byla uspesne vytvorena.");
-                            this.controller.HideHelp();
+                            this.controller.hideHelp();
                             this.controller.changeState("welcome");
                             this.controller.changeState("ticket");
                         }
@@ -312,7 +312,7 @@ public class TextUITicket extends TextUIState{
     /**
      * Generates PDF with ticket data
      */
-    private void GeneratePdf()
+    private void generatePdf()
     {
         String path = this.ticketsPath + this.ticketData.get("ticket_id") + ".pdf";
         PDDocument doc = new PDDocument();
@@ -332,25 +332,25 @@ public class TextUITicket extends TextUIState{
         }
         catch (IOException ex)
         {
-            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TextUITicket.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         // Add ticket info
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_issued"), PDType1Font.COURIER_BOLD, 24, 500, 10, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_id"), PDType1Font.COURIER_BOLD, 24, 500, 210, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_tariff"), PDType1Font.COURIER, 18, 450, 5, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_from"), PDType1Font.COURIER_BOLD, 24, 390, 52, 24);
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_to"), PDType1Font.COURIER_BOLD, 24, 235, 52, 24);
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_validity"), PDType1Font.COURIER, 24, 160, 85, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_distance"), PDType1Font.COURIER, 24, 110, 85, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, this.ticketData.get("ticket_price"), PDType1Font.COURIER_BOLD, 48, 73, 280, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, "Cena bez DPH", PDType1Font.COURIER, 12, 90, 5, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, "Price without VAT", PDType1Font.COURIER, 12, 78, 5, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, "CZK " + String.format("%.2f", (float)Integer.parseInt(this.ticketData.get("ticket_price")) - ((float)Integer.parseInt(this.ticketData.get("ticket_price")) * (float)((float)this.VAT / (float)100))), PDType1Font.COURIER, 18, 85, 140, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, "DPH", PDType1Font.COURIER, 12, 66, 5, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, "VAT", PDType1Font.COURIER, 12, 54, 5, Integer.MAX_VALUE);        
-        this.WriteTextToPage(doc, page, this.VAT + " %", PDType1Font.COURIER, 18, 61, 70, Integer.MAX_VALUE);
-        this.WriteTextToPage(doc, page, "CZK " + String.format("%.2f", (float)Integer.parseInt(this.ticketData.get("ticket_price")) * (float)((float)this.VAT / 100f)), PDType1Font.COURIER, 18, 61, 140, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_issued"), PDType1Font.COURIER_BOLD, 24, 500, 10, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_id"), PDType1Font.COURIER_BOLD, 24, 500, 210, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_tariff"), PDType1Font.COURIER, 18, 450, 5, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_from"), PDType1Font.COURIER_BOLD, 24, 390, 52, 24);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_to"), PDType1Font.COURIER_BOLD, 24, 235, 52, 24);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_validity"), PDType1Font.COURIER, 24, 160, 85, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_distance"), PDType1Font.COURIER, 24, 110, 85, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, this.ticketData.get("ticket_price"), PDType1Font.COURIER_BOLD, 48, 73, 280, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, "Cena bez DPH", PDType1Font.COURIER, 12, 90, 5, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, "Price without VAT", PDType1Font.COURIER, 12, 78, 5, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, "CZK " + String.format("%.2f", (float)Integer.parseInt(this.ticketData.get("ticket_price")) - ((float)Integer.parseInt(this.ticketData.get("ticket_price")) * (float)((float)this.VAT / (float)100))), PDType1Font.COURIER, 18, 85, 140, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, "DPH", PDType1Font.COURIER, 12, 66, 5, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, "VAT", PDType1Font.COURIER, 12, 54, 5, Integer.MAX_VALUE);        
+        this.writeTextToPage(doc, page, this.VAT + " %", PDType1Font.COURIER, 18, 61, 70, Integer.MAX_VALUE);
+        this.writeTextToPage(doc, page, "CZK " + String.format("%.2f", (float)Integer.parseInt(this.ticketData.get("ticket_price")) * (float)((float)this.VAT / 100f)), PDType1Font.COURIER, 18, 61, 140, Integer.MAX_VALUE);
         
         doc.addPage(page);
         try
@@ -360,7 +360,7 @@ public class TextUITicket extends TextUIState{
         }
         catch (IOException ex)
         {
-            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TextUITicket.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.printf("Ticket (id: %s, file: %s) has been created\n", this.ticketData.get("ticket_id"), path);
         
@@ -377,7 +377,7 @@ public class TextUITicket extends TextUIState{
      * @param left Left position of text
      * @param maxLength Maximal length of row
      */
-    private void WriteTextToPage(PDDocument document, PDPage page, String text, PDType1Font fontFamily, int fontSize, int top, int left, int maxLength)
+    private void writeTextToPage(PDDocument document, PDPage page, String text, PDType1Font fontFamily, int fontSize, int top, int left, int maxLength)
     {
         if (text.length() > maxLength)
         {
@@ -410,7 +410,7 @@ public class TextUITicket extends TextUIState{
             int idx = 0;
             while (it.hasNext())
             {
-                this.WriteTextToPage(document, page, it.next(), fontFamily, fontSize, top - (idx * fontSize), left, Integer.MAX_VALUE);
+                this.writeTextToPage(document, page, it.next(), fontFamily, fontSize, top - (idx * fontSize), left, Integer.MAX_VALUE);
                 idx++;
             }
         }
@@ -428,7 +428,7 @@ public class TextUITicket extends TextUIState{
             }
             catch (IOException ex)
             {
-                Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TextUITicket.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

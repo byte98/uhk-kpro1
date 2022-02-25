@@ -17,12 +17,12 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class TextUIDistancesSetTo extends TextUIState
      * Creates new state of program which displays dialog for setting distance between station (with destination selected)
      * @param controller Controller of program
      */
-    public DistancesSetTo(TextUIController controller)
+    public TextUIDistancesSetTo(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/set:to";
@@ -63,8 +63,8 @@ public class TextUIDistancesSetTo extends TextUIState
         data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(
                 this.origin
         ));
-        data.put("station_from", this.origin.GetName() + " (" + this.origin.GetAbbrevation() + ")");
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        data.put("station_from", this.origin.getName() + " (" + this.origin.getAbbrevation() + ")");
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
 
@@ -85,8 +85,8 @@ public class TextUIDistancesSetTo extends TextUIState
             else
             {
                 Map<String, String> data = new HashMap<>();
-                data.put("station_from", this.origin.GetAbbrevation());
-                data.put("station_to", s.GetAbbrevation());
+                data.put("station_from", this.origin.getAbbrevation());
+                data.put("station_to", s.getAbbrevation());
                 this.controller.changeState("distances-set-distance", data);
             }
         }

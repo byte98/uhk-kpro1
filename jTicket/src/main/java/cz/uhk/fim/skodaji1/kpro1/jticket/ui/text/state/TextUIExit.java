@@ -17,10 +17,10 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.ScreenFactory;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIScreenFactory;
 import java.awt.Color;
 
 /**
@@ -33,11 +33,11 @@ public class TextUIExit extends TextUIState {
      * Creates new state of program representing exit dialog
      * @param controller Controller of whole program
      */
-    public Exit(TextUIController controller)
+    public TextUIExit(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/exit?";
-        this.screen = ScreenFactory.CreateHTMLScreen("exit", "exit.html");
+        this.screen = TextUIScreenFactory.createHTMLScreen("exit", "exit.html");
         this.name = "exit";
         
         this.helps = new ITextUIHelp[2];        
@@ -50,8 +50,8 @@ public class TextUIExit extends TextUIState {
     {
         switch (input.toLowerCase())
         {
-            case "yes": this.controller.Stop(); break;
-            case "no": this.controller.ChangeToPreviousState();                
+            case "yes": this.controller.stop(); break;
+            case "no": this.controller.changeToPreviousState();                
         }
     }
     

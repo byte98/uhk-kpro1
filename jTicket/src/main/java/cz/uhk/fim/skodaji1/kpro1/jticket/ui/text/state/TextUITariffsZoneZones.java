@@ -17,13 +17,13 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +53,7 @@ public class TextUITariffsZoneZones extends TextUIState {
      * Creates new dialog for creating new zone tariff (with setting zones to stations)
      * @param controller Controller of program
      */
-    public TariffsZoneZones(TextUIController controller)
+    public TextUITariffsZoneZones(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
@@ -67,7 +67,7 @@ public class TextUITariffsZoneZones extends TextUIState {
     }
 
     @Override
-    public void Load()
+    public void load()
     {
         this.stations = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetAllStations();
         this.stIdx = 0;
@@ -77,11 +77,11 @@ public class TextUITariffsZoneZones extends TextUIState {
     public ITextUIScreen getScreen()
     {
         Map<String, String> data = new HashMap<>();
-        data.put("tariff_zones", this.tariff.GenerateZonesTr());
-        data.put("tariff_name", this.tariff.GetName());
-        data.put("station_name", this.stations[this.stIdx].GetName());
-        data.put("station_abbr", this.stations[this.stIdx].GetAbbrevation());
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        data.put("tariff_zones", this.tariff.generateZonesTr());
+        data.put("tariff_name", this.tariff.getName());
+        data.put("station_name", this.stations[this.stIdx].getName());
+        data.put("station_abbr", this.stations[this.stIdx].getAbbrevation());
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -90,11 +90,11 @@ public class TextUITariffsZoneZones extends TextUIState {
     {
         this.tariff = new ZoneTariff(data.get("tariff_name"), data.get("tariff_abbr"));
         this.commandPrefix = "/data/tariffs/zone/" + data.get("tariff_abbr").toLowerCase();
-        data.put("tariff_zones", this.tariff.GenerateZonesTr());
-        data.put("station_name", this.stations[this.stIdx].GetName());
-        data.put("station_abbr", this.stations[this.stIdx].GetAbbrevation());
-        data.put("tariff_name", this.tariff.GetName());
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        data.put("tariff_zones", this.tariff.generateZonesTr());
+        data.put("station_name", this.stations[this.stIdx].getName());
+        data.put("station_abbr", this.stations[this.stIdx].getAbbrevation());
+        data.put("tariff_name", this.tariff.getName());
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -104,7 +104,7 @@ public class TextUITariffsZoneZones extends TextUIState {
      * @return <code>TRUE</code> if input contains integer only, <code>FALSE</code> otherwise
      * @author Jonas K https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
      */
-    private boolean CheckInt(String input)
+    private boolean checkInt(String input)
     {
         if (input == null)
         {
@@ -142,25 +142,25 @@ public class TextUITariffsZoneZones extends TextUIState {
         {
             this.controller.changeState("tariffs");
         }
-        else if (this.CheckInt(input))
+        else if (this.checkInt(input))
         {
             int zone = Integer.parseInt(input);
             if (zone > 0)
             {
-                this.tariff.SetZone(this.stations[this.stIdx], zone);
-                this.controller.showSucess("Zona pro stanici '" + this.stations[this.stIdx].GetName() + "' byla nastavene.");
+                this.tariff.setZone(this.stations[this.stIdx], zone);
+                this.controller.showSucess("Zona pro stanici '" + this.stations[this.stIdx].getName() + "' byla nastavene.");
                 this.stIdx++;
                 if (this.stIdx >= this.stations.length)
                 {
                     cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariffs.GetInstance().AddTariff(this.tariff);
                     this.controller.showSucess("Zony pro veschny stanice byly uspesne nastaveny!");
                     Map<String, String> data = new HashMap<>();
-                    data.put("tariff_abbr", this.tariff.GetAbbr());
+                    data.put("tariff_abbr", this.tariff.getAbbr());
                     this.controller.changeState("tariffs-zone-prices", data);
                 }
                 else
                 {
-                    this.controller.ReDraw();
+                    this.controller.reDraw();
                 }
             }
             else

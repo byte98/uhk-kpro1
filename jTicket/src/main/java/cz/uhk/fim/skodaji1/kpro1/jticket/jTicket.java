@@ -1,5 +1,12 @@
+package cz.uhk.fim.skodaji1.kpro1.jticket;
+
+import cz.uhk.fim.skodaji1.kpro1.jticket.data.Configuration;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
- * Copyright (C) 2021 Jiri Skoda <skodaji1@uhk.cz>
+ * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,36 +22,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package cz.uhk.fim.skodaji1.kpro1.jticket;
-
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.Configuration;
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.UIMode;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUI;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 /**
- * Entry point of whole program
- * @author Jiri Skoda <skodaji1@uhk.cz>
+ * Class representing whole program jTicket
+ * @author Jiri Skoda <jiri.skoda@student.upce.cz>
  */
-public class Main
-{    
+public class jTicket
+{
+    /**
+     * Path to file with configuration of program
+     */
+    private static final String configFile = "config.ini";
+    
     /**
      * Main function of program
      * @param args Arguments of program
      */
     public static void main(String[] args)
     {
-        //Controller controller = Controller.GetController();
-        //controller.Start();
-        Configuration config = Configuration.getInstance("config.ini");
-        IUserInterface ui = null;
-        switch (config.uiMode)
-        {
-            case TEXT: ui = new TextUI(); break;
-        }
+        Configuration config = Configuration.getInstance(configFile);
+        IUserInterface ui = config.getUI();
         if (ui != null)
         {
             ui.prepare();
@@ -52,7 +49,7 @@ public class Main
         }
         else
         {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Unknown UI MODE");
+            Logger.getLogger(jTicket.class.getName()).log(Level.SEVERE, "Unknown UI MODE");
         }
     }
 }

@@ -17,7 +17,12 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,11 +69,11 @@ public class TextUIDistancesSetDistance extends TextUIState
         data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(
                 this.origin
         ));
-        data.put("station_from", this.origin.GetName() + " (" + this.origin.GetAbbrevation() + ")");
-        data.put("station_to", this.destination.GetName() + " (" + this.destination.GetAbbrevation() + ")");
+        data.put("station_from", this.origin.getName() + " (" + this.origin.getAbbrevation() + ")");
+        data.put("station_to", this.destination.getName() + " (" + this.destination.getAbbrevation() + ")");
         int dist = cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GetDistance(this.origin, this.destination);
         data.put("distance", Integer.toString(dist));
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
 
@@ -81,7 +86,7 @@ public class TextUIDistancesSetDistance extends TextUIState
         }
         else
         {
-            if (this.CheckInt(input))
+            if (this.checkInt(input))
             {
                 int value = Integer.parseInt(input);
                 if (value < 0)
@@ -91,8 +96,8 @@ public class TextUIDistancesSetDistance extends TextUIState
                 else
                 {
                     Map<String, String> data = new HashMap<>();
-                    data.put("station_from", this.origin.GetAbbrevation());
-                    data.put("station_to",this.destination.GetAbbrevation());
+                    data.put("station_from", this.origin.getAbbrevation());
+                    data.put("station_to",this.destination.getAbbrevation());
                     data.put("distance", input);
                     this.controller.changeState("distances-set", data);
                 }
@@ -110,7 +115,7 @@ public class TextUIDistancesSetDistance extends TextUIState
      * @return <code>TRUE</code> if input contains integer only, <code>FALSE</code> otherwise
      * @author Jonas K https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
      */
-    private boolean CheckInt(String input)
+    private boolean checkInt(String input)
     {
         if (input == null)
         {

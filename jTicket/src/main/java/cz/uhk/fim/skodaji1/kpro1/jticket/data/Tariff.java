@@ -64,7 +64,7 @@ public abstract class Tariff {
      * Gets name of tariff
      * @return Name of tariff
      */
-    public String GetName()
+    public String getName()
     {
         return this.name;
     }
@@ -73,7 +73,7 @@ public abstract class Tariff {
      * Gets abbreavation of tariff
      * @return Abbreavation of tariff
      */
-    public String GetAbbr()
+    public String getAbbr()
     {
         return this.abbr;
     }

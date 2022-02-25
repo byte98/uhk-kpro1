@@ -298,8 +298,8 @@ public class Distances
         Distance d = this.GetDistanceFromStation(origin);
         if (d != null)
         {
-            reti = d.GetAllDistances().entrySet().stream().filter(entry -> (entry.getKey().equals(origin) == false)).map(entry -> "<tr><td style='color: green;'>" + entry.getKey().GetAbbrevation() + "</td>" +
-                    "<td style='color: gray;'>" + entry.getKey().GetName() + "</td>" +
+            reti = d.GetAllDistances().entrySet().stream().filter(entry -> (entry.getKey().equals(origin) == false)).map(entry -> "<tr><td style='color: green;'>" + entry.getKey().getAbbrevation() + "</td>" +
+                    "<td style='color: gray;'>" + entry.getKey().getName() + "</td>" +
                             "<td style='color: white;'>" + entry.getValue() + "&nbsp;km</td></tr>").reduce(reti, String::concat);
         }
         return reti;

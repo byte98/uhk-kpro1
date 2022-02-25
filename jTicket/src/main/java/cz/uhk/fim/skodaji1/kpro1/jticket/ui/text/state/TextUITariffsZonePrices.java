@@ -17,12 +17,12 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class TextUITariffsZonePrices extends TextUIState {
      * Creates new dialog for creating new zone tariff (with setting prices to zones)
      * @param controller Controller of program
      */
-    public TariffsZonePrices(TextUIController controller)
+    public TextUITariffsZonePrices(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/tariffs/";
@@ -70,9 +70,9 @@ public class TextUITariffsZonePrices extends TextUIState {
     {
         Map<String, String> data = new HashMap<>();
         data.put("zones_count", Integer.toString(this.actZone));
-        data.put("tariff_name", this.tariff.GetName());
-        data.put("zones_prices", this.GetZonePrices());
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        data.put("tariff_name", this.tariff.getName());
+        data.put("zones_prices", this.getZonePrices());
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -107,9 +107,9 @@ public class TextUITariffsZonePrices extends TextUIState {
         }
         
         data.put("zones_count", Integer.toString(this.actZone));
-        data.put("tariff_name", this.tariff.GetName());
-        data.put("zones_prices", this.GetZonePrices());
-        ((TextUIHTMLTemplateScreen)this.screen).SetContent(data);
+        data.put("tariff_name", this.tariff.getName());
+        data.put("zones_prices", this.getZonePrices());
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
     
@@ -119,7 +119,7 @@ public class TextUITariffsZonePrices extends TextUIState {
      * @return <code>TRUE</code> if input contains integer only, <code>FALSE</code> otherwise
      * @author Jonas K https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
      */
-    private boolean CheckInt(String input)
+    private boolean checkInt(String input)
     {
         if (input == null)
         {
@@ -157,7 +157,7 @@ public class TextUITariffsZonePrices extends TextUIState {
         {
             this.controller.changeState("tariffs");
         }
-        else if (this.CheckInt(input))
+        else if (this.checkInt(input))
         {
             int price = Integer.parseInt(input);
             if (price >= 0)
@@ -172,7 +172,7 @@ public class TextUITariffsZonePrices extends TextUIState {
                 }
                 else
                 {
-                    this.controller.ReDraw();
+                    this.controller.reDraw();
                 }
             }
             else
@@ -190,7 +190,7 @@ public class TextUITariffsZonePrices extends TextUIState {
      * Gets HTML table rows with zone prices
      * @return String with HTML table rows with zone prices
      */
-    private String GetZonePrices()
+    private String getZonePrices()
     {
         String reti = new String();
         

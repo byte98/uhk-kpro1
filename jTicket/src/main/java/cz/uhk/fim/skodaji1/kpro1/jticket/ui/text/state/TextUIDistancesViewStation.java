@@ -17,14 +17,13 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.TextUIHTMLTemplateScreen;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.Screen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -43,7 +42,7 @@ public class TextUIDistancesViewStation extends TextUIState
      * Creates new state of program with table of distances from station
      * @param controller 
      */
-    public DistancesViewStation(TextUIController controller)
+    public TextUIDistancesViewStation(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "/data/distances/view/";
@@ -61,11 +60,11 @@ public class TextUIDistancesViewStation extends TextUIState
        Station s = cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations.GetInstance().GetStation(data.get("station"));
        if (s != null)
        {
-           data.put("station_from", s.GetName() + " (" + s.GetAbbrevation() + ")");
+           data.put("station_from", s.getName() + " (" + s.getAbbrevation() + ")");
            data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(s));
            this.origin = s;
-           this.commandPrefix = "/data/distances/view/" + s.GetAbbrevation().toLowerCase();
-           ((TextUIHTMLTemplateScreen) this.screen).SetContent(data);           
+           this.commandPrefix = "/data/distances/view/" + s.getAbbrevation().toLowerCase();
+           ((TextUIHTMLTemplateScreen) this.screen).setContent(data);           
        }
        return this.screen;
     }

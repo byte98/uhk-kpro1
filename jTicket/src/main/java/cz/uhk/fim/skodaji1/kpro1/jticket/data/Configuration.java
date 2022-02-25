@@ -17,6 +17,8 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.data;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUI;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -283,6 +285,20 @@ public class Configuration
             {
                 Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, ex, null);
             }
+        }
+        return reti;
+    }
+    
+    /**
+     * Gets handler of user interface defined in configuration
+     * @return Handler of user interface defined in configuration
+     */
+    public IUserInterface getUI()
+    {
+        IUserInterface reti = null;
+        switch (this.uiMode)
+        {
+            case TEXT: reti = new TextUI(); break;
         }
         return reti;
     }

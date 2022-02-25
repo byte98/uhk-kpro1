@@ -42,10 +42,15 @@ public class TextUI implements IUserInterface
      */
     private TextUIController controller;
     
+    /**
+     * Path to directory with html templates
+     */
+    public static final String HTML_DIR = "resources/textui/";
+    
     @Override
     public void prepare()
     {
-        this.controller = TextUIController.getController();        
+        this.controller = TextUIController.getController();
     }
 
     @Override
@@ -59,10 +64,13 @@ public class TextUI implements IUserInterface
                 mainWindow = new TextUIMainWindow();
                 mainWindow.pack();
                 mainWindow.setController(controller);
+                mainWindow.setVisible(true);
 
                 helpWindow = new TextUIHelpWindow();
                 helpWindow.pack();
-                mainWindow.setVisible(true);
+                controller.setWindows(mainWindow, helpWindow);
+                controller.changeState("welcome");
+                
             }
         });
     }

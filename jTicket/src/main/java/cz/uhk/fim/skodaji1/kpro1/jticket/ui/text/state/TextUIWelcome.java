@@ -17,10 +17,10 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.Controller;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.HelpFactory;
-import cz.uhk.fim.skodaji1.kpro1.jticket.screens.ScreenFactory;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIScreenFactory;
 import java.awt.Color;
 
 /**
@@ -34,11 +34,11 @@ public class TextUIWelcome extends TextUIState
      * Creates new welcome state of program
      * @param controller Controller of whole program
      */
-    public Welcome(TextUIController controller)
+    public TextUIWelcome(TextUIController controller)
     {
         super(controller);
         this.commandPrefix = "";
-        this.screen = ScreenFactory.CreateHTMLScreen("welcome", "welcome.html");
+        this.screen = TextUIScreenFactory.createHTMLScreen("welcome", "welcome.html");
         this.name = "welcome";
         
         this.helps = new ITextUIHelp[3];

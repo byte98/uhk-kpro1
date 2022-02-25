@@ -20,7 +20,7 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUITextUIHTMLTemplateScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.Map;
@@ -55,7 +55,7 @@ public class TextUIDistancesSet extends TextUIState
     {
         super(controller);
         this.commandPrefix = "/data/distances/set?";
-        this.screen = new TextUITextUIHTMLTemplateScreen("distances-set", "distances-set.html");
+        this.screen = new TextUIHTMLTemplateScreen("distances-set", "distances-set.html");
         this.name = "distances-set";
         this.strict = true;
         
@@ -72,10 +72,10 @@ public class TextUIDistancesSet extends TextUIState
         data.put("stations_distances_tr", cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances.GetInstance().GenerateDistancesRows(
                 this.origin
         ));
-        data.put("station_from", this.origin.GetName() + " (" + this.origin.GetAbbrevation() + ")");
-        data.put("station_to", this.destination.GetName() + " (" + this.destination.GetAbbrevation() + ")");
+        data.put("station_from", this.origin.getName() + " (" + this.origin.getAbbrevation() + ")");
+        data.put("station_to", this.destination.getName() + " (" + this.destination.getAbbrevation() + ")");
         this.distance = Integer.parseInt(data.get("distance"));
-        ((TextUITextUIHTMLTemplateScreen)this.screen).setContent(data);
+        ((TextUIHTMLTemplateScreen)this.screen).setContent(data);
         return this.screen;
     }
 
