@@ -104,7 +104,7 @@ public class Tariffs {
             sb.append("</td><td>");
             sb.append(t.getName());
             sb.append("</td><td style='color: green;'>");
-            sb.append(t.GetType() == TariffType.DISTANCE ? "VZDALENOSTNI" : (t.GetType() == TariffType.ZONE ? "ZONOVY" : "N/A"));
+            sb.append(t.getType() == TariffType.DISTANCE ? "VZDALENOSTNI" : (t.getType() == TariffType.ZONE ? "ZONOVY" : "N/A"));
             sb.append("</td></tr>");                
         }
         return sb.toString();
@@ -179,7 +179,7 @@ public class Tariffs {
             Tariff t = it.next();
             if (t != null)
             {
-                output += t.getAbbr() + "," + t.getName() + "," + (t.GetType() == TariffType.ZONE ? "Z" : "D") + "\n";
+                output += t.getAbbr() + "," + t.getName() + "," + (t.getType() == TariffType.ZONE ? "Z" : "D") + "\n";
             }
         }
         try

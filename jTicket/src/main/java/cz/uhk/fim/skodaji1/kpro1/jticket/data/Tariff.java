@@ -55,7 +55,7 @@ public abstract class Tariff {
      * Gets type of tariff
      * @return Type of tariff
      */
-    public TariffType GetType()
+    public TariffType getType()
     {
         return this.type;
     }

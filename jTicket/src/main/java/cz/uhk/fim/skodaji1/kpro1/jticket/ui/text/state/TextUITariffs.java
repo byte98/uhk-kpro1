@@ -90,11 +90,11 @@ public class TextUITariffs extends TextUIState {
                 {
                     Map<String, String> data = new HashMap<>();
                     data.put("tariff_abbr", t.getAbbr());
-                    if (t.GetType() == TariffType.ZONE)
+                    if (t.getType() == TariffType.ZONE)
                     {
                         this.controller.changeState("tariffs-zone-view", data);
                     }   
-                    else if (t.GetType() == TariffType.DISTANCE)
+                    else if (t.getType() == TariffType.DISTANCE)
                     {
                         this.controller.changeState("tariffs-dist-view", data);
                     }

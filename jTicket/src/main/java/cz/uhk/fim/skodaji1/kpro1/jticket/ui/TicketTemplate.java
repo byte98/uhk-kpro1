@@ -237,6 +237,7 @@ public class TicketTemplate
         }
         
         this.fields.forEach(field -> {
+            System.out.println(field.getContent());
             this.writeTextToPage(
                     doc,
                     page,

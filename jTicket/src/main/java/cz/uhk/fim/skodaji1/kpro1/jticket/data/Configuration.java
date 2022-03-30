@@ -19,6 +19,7 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.data;
 
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUI;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -67,6 +68,21 @@ public class Configuration
      * Mode of user interface
      */
     public UIMode uiMode;
+    
+    /**
+     * Count of tickets issued
+     */
+    public int ticketNr;
+    
+    /**
+     * Validity of ticket in hours
+     */
+    public int ticketValidity;
+    
+    /**
+     * VAT rate in percents
+     */
+    public double VAT;
     
     /**
      * Creates new system configuration
@@ -126,6 +142,9 @@ public class Configuration
             toSave.add("TICKET_DIRECTORY");
             toSave.add("UI_MODE");
             toSave.add("TICKET_TEMPLATE");
+            toSave.add("TICKET_ISSUED");
+            toSave.add("TICKET_VALIDITY");
+            toSave.add("VAT");
             for(String line: oldLines)
             {
                 boolean added = false;
@@ -142,6 +161,9 @@ public class Configuration
                             case "TICKET_BACKGROUND": sb.append(this.ticketBackground); break;
                             case "TICKET_DIRECTORY" : sb.append(this.outputDirectory);  break;
                             case "TICKET_TEMPLATE"  : sb.append(this.ticketTemplate);   break;
+                            case "TICKET_ISSUED"    : sb.append(this.ticketNr);         break;
+                            case "TICKET_VALIDITY"  : sb.append(this.ticketValidity);   break;
+                            case "VAT"              : sb.append(this.VAT);              break;
                             case "UI_MODE"          : switch(this.uiMode)
                             {
                                 case TEXT: sb.append("TEXT");         break;
@@ -171,6 +193,9 @@ public class Configuration
                         case "TICKET_BACKGROUND": sb.append(this.ticketBackground); break;
                         case "TICKET_DIRECTORY" : sb.append(this.outputDirectory);  break;
                         case "TICKET_TEMPLATE"  : sb.append(this.ticketTemplate);   break;
+                        case "TICKET_ISSUED"    : sb.append(this.ticketNr);         break;
+                        case "TICKET_VALIDITY"  : sb.append(this.ticketValidity);   break;
+                        case "VAT"              : sb.append(this.VAT);              break;
                         case "UI_MODE"          : switch(this.uiMode)
                         {
                             case TEXT: sb.append("TEXT");         break;
@@ -215,6 +240,9 @@ public class Configuration
         this.outputDirectory = fileContent.get("TICKET_DIRECTORY");
         this.ticketBackground = fileContent.get("TICKET_BACKGROUND");
         this.ticketTemplate = fileContent.get("TICKET_TEMPLATE");
+        this.ticketNr = Integer.parseInt(fileContent.get("TICKET_ISSUED"));
+        this.ticketValidity = Integer.parseInt(fileContent.get("TICKET_VALIDITY"));
+        this.VAT = Double.parseDouble(fileContent.get("VAT"));
         if (fileContent.get("UI_MODE") != null)
         {
             switch(fileContent.get("UI_MODE").toUpperCase())
@@ -299,7 +327,9 @@ public class Configuration
         switch (this.uiMode)
         {
             case TEXT: reti = new TextUI(); break;
-        }
+            case GRAPHICS: reti = new WindowUI(); break;
+        } 
         return reti;
     }
 }
+        

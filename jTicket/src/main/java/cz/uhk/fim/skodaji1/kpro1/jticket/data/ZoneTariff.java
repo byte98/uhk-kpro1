@@ -352,7 +352,7 @@ public class ZoneTariff extends Tariff{
      * @param s Station which zone will be get
      * @return Number of zone to which station belongs to
      */
-    public int GetZone(Station s)
+    public int getZone(Station s)
     {
         return this.zones.get(s);
     }

@@ -32,7 +32,7 @@ public class jTicket
     /**
      * Path to file with configuration of program
      */
-    private static final String configFile = "config.ini";
+    public static final String CONFIG_FILE = "config.ini";
     
     /**
      * Main function of program
@@ -40,7 +40,7 @@ public class jTicket
      */
     public static void main(String[] args)
     {
-        Configuration config = Configuration.getInstance(configFile);
+        Configuration config = Configuration.getInstance(jTicket.CONFIG_FILE);
         IUserInterface ui = config.getUI();
         if (ui != null)
         {
