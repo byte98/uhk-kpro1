@@ -89,7 +89,7 @@ public class ZoneTariff extends Tariff{
         idx++;
         for (Station s: this.zones.keySet())
         {
-            output[idx] = s.GetIdentifier();
+            output[idx] = s.getIdentifier();
             idx++;
         }
         for (int i = 0; i < this.zones.size(); i++)

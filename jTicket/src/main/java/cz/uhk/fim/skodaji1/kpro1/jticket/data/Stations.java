@@ -117,7 +117,7 @@ public class Stations {
                 Station s = it.next();
                 if (s != null)
                 {
-                    String output = s.GetIdentifier() + "," + s.getAbbrevation() + "," + s.getName() + "\n";
+                    String output = s.getIdentifier() + "," + s.getAbbrevation() + "," + s.getName() + "\n";
                     fw.append(output);
                 }
             }
@@ -142,7 +142,7 @@ public class Stations {
             Station s = it.next();
             if (s != null)
             {
-                if (s.GetIdentifier() == id)
+                if (s.getIdentifier() == id)
                 {
                     reti = false;
                     break;
@@ -223,7 +223,7 @@ public class Stations {
             Station s = it.next();
             if (s != null)
             {
-                if (s.GetIdentifier() == identifier)
+                if (s.getIdentifier() == identifier)
                 {
                     reti = s;
                     break;
@@ -252,8 +252,8 @@ public class Stations {
      * @return Error message according to result:
      * <ul>
      *  <li><code>null</code> if station has been successfully added</li>
-     *  <li><code>"zkratka je jiz obsazena</code> if abbrevation is already used</li>
-     *  <li><code>"stanice jiz existuje</code> if name of station is already in the system</li>
+     *  <li><code>"zkratka je jiz obsazena"</code> if abbrevation is already used</li>
+     *  <li><code>"stanice jiz existuje"</code> if name of station is already in the system</li>
      * </ul>
      */
     public String AddStation(Station st)
@@ -271,7 +271,7 @@ public class Stations {
                     newId = ThreadLocalRandom.current().nextInt(0,Integer.MAX_VALUE - 1);
                 }
                 while (this.CheckFreeIdentifier(newId) == false);
-                st.SetIdentifier(newId);
+                st.setIdentifier(newId);
                 this.stations.add(st);
                 this.SaveStations();
             }
@@ -404,7 +404,7 @@ public class Stations {
     {
         this.stations.remove(s);
         Station newS = new Station(newAbbr, newName);
-        newS.SetIdentifier(s.GetIdentifier());
+        newS.setIdentifier(s.getIdentifier());
         this.stations.add(newS);
         this.SaveStations();        
     }

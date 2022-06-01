@@ -85,7 +85,7 @@ public class Station {
      * Sets identifier of the station
      * @param id New identifier of the station
      */
-    public void SetIdentifier(int id)
+    public void setIdentifier(int id)
     {
         this.identifier = id;
     }
@@ -94,8 +94,26 @@ public class Station {
      * Gets identifier of the station
      * @return Identifier of the station
      */
-    public int GetIdentifier()
+    public int getIdentifier()
     {
         return this.identifier;
+    }
+    
+    /**
+     * Sets new name to station
+     * @param name New name of station
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
+    /**
+     * Sets new abbrevation to station
+     * @param abbr New abbreavation of station
+     */
+    public void setAbbr(String abbr)
+    {
+        this.abbrevation = abbr;
     }
 }

@@ -15,42 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window;
 
-package cz.uhk.fim.skodaji1.kpro1.jticket;
-
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.Configuration;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import javax.swing.table.DefaultTableModel;
 
 /**
- * Class representing whole program jTicket
+ * Class representing table model for stations table
  * @author Jiri Skoda <jiri.skoda@student.upce.cz>
  */
-public class jTicket
+public class WindowUIDistancesTableModel extends DefaultTableModel
 {
     /**
-     * Path to file with configuration of program
+     * Creates new table model for stations table
+     * @param data Array with rows which will be displayed in table
+     * @param columns Columns of table
      */
-    public static final String CONFIG_FILE = "config.ini";
+    public WindowUIDistancesTableModel (Object[][] data, Object[] columns)
+    {
+        super(data, columns);
+    }
     
     /**
-     * Main function of program
-     * @param args Arguments of program
+     * Creates new table model for stations table
      */
-    public static void main(String[] args)
+    public WindowUIDistancesTableModel()
     {
-        Configuration config = Configuration.getInstance(jTicket.CONFIG_FILE);
-        IUserInterface ui = config.getUI();
-        if (ui != null)
-        {
-            ui.prepare();
-            ui.start();
-        }
-        else
-        {
-            Logger.getLogger(jTicket.class.getName()).log(Level.SEVERE, "Unknown UI MODE");
-        }
+        super();
     }
+    
+    @Override
+    public boolean isCellEditable(int row, int column)
+    {
+        return (column > 0 && (column - 1) != row);
+    }
+    
 }

@@ -17,7 +17,9 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.WindowUIMainWindow;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.WindowUIExceptionDialog;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
@@ -40,7 +42,6 @@ public class WindowUI implements IUserInterface
      */
     public static final String PATH = "resources/windowui";
     
-
     @Override
     public void prepare()
     { 
@@ -65,9 +66,17 @@ public class WindowUI implements IUserInterface
                 mainWindow = new WindowUIMainWindow();
                 mainWindow.pack();
                 mainWindow.setVisible(true);
-                
             }
         });
     }
     
+    /**
+     * Method which handles exception
+     * @param ex Exception which should be handled
+     */
+    public static void handleException(Exception ex)
+    {
+        WindowUIExceptionDialog dialog = new WindowUIExceptionDialog(ex);
+        dialog.showDialog();
+    }
 }

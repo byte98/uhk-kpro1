@@ -84,7 +84,7 @@ public class Distances
         int[] stIds = new int[stations.length];
         for (int i = 0; i < stations.length; i++)
         {
-            stIds[i] = stations[i].GetIdentifier();
+            stIds[i] = stations[i].getIdentifier();
         }
         
         // Then, get arrays of distances from each station
@@ -99,7 +99,7 @@ public class Distances
             int from = 0;
             for (int f = 0; f < stIds.length; f++)
             {
-                if (stIds[f] == s.GetIdentifier())
+                if (stIds[f] == s.getIdentifier())
                 {
                     from = f;
                     break;

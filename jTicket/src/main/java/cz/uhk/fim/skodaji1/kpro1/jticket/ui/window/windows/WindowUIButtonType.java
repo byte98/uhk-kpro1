@@ -15,42 +15,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-package cz.uhk.fim.skodaji1.kpro1.jticket;
-
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.Configuration;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
 /**
- * Class representing whole program jTicket
+ * Enumeration of all available button types
  * @author Jiri Skoda <jiri.skoda@student.upce.cz>
  */
-public class jTicket
+public enum WindowUIButtonType
 {
     /**
-     * Path to file with configuration of program
+     * Yes button
      */
-    public static final String CONFIG_FILE = "config.ini";
+    YES,
     
     /**
-     * Main function of program
-     * @param args Arguments of program
+     * No button
      */
-    public static void main(String[] args)
-    {
-        Configuration config = Configuration.getInstance(jTicket.CONFIG_FILE);
-        IUserInterface ui = config.getUI();
-        if (ui != null)
-        {
-            ui.prepare();
-            ui.start();
-        }
-        else
-        {
-            Logger.getLogger(jTicket.class.getName()).log(Level.SEVERE, "Unknown UI MODE");
-        }
-    }
+    NO,
+    
+    /**
+     * OK button
+     */
+    OK,
+    
+    /**
+     * Cancel button
+     */
+    CANCEL
 }
