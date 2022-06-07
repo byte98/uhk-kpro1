@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,6 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -27,7 +26,7 @@ import java.util.logging.Logger;
 
 /**
  * Class representing screen which content is in HTML and there is data which will be displayed
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
 public class TextUIHTMLTemplateScreen extends TextUIHTMLScreen
 {

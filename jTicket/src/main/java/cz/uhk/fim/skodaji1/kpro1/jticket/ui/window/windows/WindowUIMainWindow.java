@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,10 +17,12 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialog;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
@@ -30,7 +32,7 @@ import javax.swing.JMenuItem;
 
 /**
  * Class representing main window of program
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
 public class WindowUIMainWindow extends WindowUIWindow
 {    
@@ -145,6 +147,10 @@ public class WindowUIMainWindow extends WindowUIWindow
         this.itemTariffs = new JMenuItem();
         this.itemTariffs.setText("Tarify");
         this.itemTariffs.setIcon(new ImageIcon(WindowUI.PATH + "/dataitem.png"));
+        this.itemTariffs.addActionListener((e) -> {
+            WindowUITariffsWindow tariffsWindow = new WindowUITariffsWindow();
+            tariffsWindow.setVisible(true);
+        });
         this.dataMenu.add(this.itemTariffs);
         
         this.topMenu.add(this.dataMenu);

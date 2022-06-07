@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,12 +17,14 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialog;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
@@ -35,7 +37,7 @@ import javax.swing.SpinnerNumberModel;
 
 /**
  * Window with detail about distance between stations
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
 public class WindowUIDistanceDetailWindow extends JDialog
 {

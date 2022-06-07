@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,31 +15,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
+package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs;
 
 /**
- * Enumeration of all available dialog types
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Enumeration of all available button types
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public enum WindowUIDialogType
+public enum WindowUIButtonType
 {
     /**
-     * Dialog with some information
+     * Yes button
      */
-    INFO,
+    YES,
     
     /**
-     * Dialog with some question
+     * No button
      */
-    QUESTION,
+    NO,
     
     /**
-     * Dialog with some warning
+     * OK button
      */
-    WARNING,
+    OK,
     
     /**
-     * Dialog with some error
+     * Cancel button
      */
-    ERROR
+    CANCEL
 }

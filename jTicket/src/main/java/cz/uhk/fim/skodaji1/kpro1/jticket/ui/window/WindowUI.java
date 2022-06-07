@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +17,9 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.WindowUIMainWindow;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.WindowUIExceptionDialog;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIExceptionDialog;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.WindowUIMainWindow;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
@@ -28,7 +28,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * Class representing user interface which uses windows to display content
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
 public class WindowUI implements IUserInterface
 {

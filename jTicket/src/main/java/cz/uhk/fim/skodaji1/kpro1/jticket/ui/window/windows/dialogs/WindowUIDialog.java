@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,12 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
+package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs;
 
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
 public class WindowUIDialog extends JDialog
 {
@@ -223,9 +224,11 @@ public class WindowUIDialog extends JDialog
                     this.result = WindowUIButtonType.OK;
                     this.dispose();
                 });
+                reti.setMnemonic(KeyEvent.VK_O);
                 break;
             case CANCEL:
                 reti = new JButton(WindowUIDialog.BUTTON_CANCEL);
+                reti.setMnemonic(KeyEvent.VK_Z);
                 reti.addActionListener((e) -> {
                     this.result = WindowUIButtonType.CANCEL;
                     this.dispose();
@@ -233,6 +236,7 @@ public class WindowUIDialog extends JDialog
                 break;
             case YES:
                 reti = new JButton(WindowUIDialog.BUTTON_YES);
+                reti.setMnemonic(KeyEvent.VK_A);
                 reti.addActionListener((e) -> {
                     this.result = WindowUIButtonType.YES;
                     this.dispose();
@@ -240,6 +244,7 @@ public class WindowUIDialog extends JDialog
                 break;
             case NO:
                 reti = new JButton(WindowUIDialog.BUTTON_NO);
+                reti.setMnemonic(KeyEvent.VK_N);
                 reti.addActionListener((e) -> {
                     this.result = WindowUIButtonType.NO;
                     this.dispose();

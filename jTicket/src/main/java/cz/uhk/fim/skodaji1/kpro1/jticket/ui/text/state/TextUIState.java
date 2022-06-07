@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,8 @@
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import java.util.Map;
 

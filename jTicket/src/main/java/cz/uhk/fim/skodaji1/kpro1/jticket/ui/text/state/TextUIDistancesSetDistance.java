@@ -17,11 +17,11 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIScreen;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHTMLTemplateScreen;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
 import java.awt.Color;
 import java.util.HashMap;

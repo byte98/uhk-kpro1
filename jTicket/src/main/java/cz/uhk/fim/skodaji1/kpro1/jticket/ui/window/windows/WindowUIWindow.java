@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ import javax.swing.border.BevelBorder;
 
 /**
  * Class abstracting all common attributes to all windows
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
 public abstract class WindowUIWindow extends JFrame
 {
@@ -168,12 +169,14 @@ public abstract class WindowUIWindow extends JFrame
         this.fileMenu = new JMenu();
         this.fileMenu.setText("Soubor");
         this.fileMenu.setIcon(new ImageIcon(WindowUI.PATH + "/file.png"));
+        this.fileMenu.setMnemonic(KeyEvent.VK_S);
         this.topMenu.add(this.fileMenu);
         
         // Close window
         this.closeItem = new JMenuItem();
         this.closeItem.setText("Zavřít");
         this.closeItem.setIcon(new ImageIcon(WindowUI.PATH + "/close.png"));
+        this.closeItem.setMnemonic(KeyEvent.VK_Z);
         if (this.exitAction != null)
         {
             this.closeItem.addActionListener(this.exitAction);

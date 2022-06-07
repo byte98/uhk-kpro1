@@ -15,31 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
+package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.tables;
 
-import java.awt.Color;
+import javax.swing.table.DefaultTableModel;
 
 /**
- * Class representing help which will be displayed on screen
+ * Class representing table model for read only table
  * @author Jiri Skoda <skodaji1@uhk.cz>
  */
-public interface ITextUIHelp
+public class WindowUIReadOnlyTableModel extends DefaultTableModel
 {
     /**
-     * Gets command to which help belongs to
-     * @return Command to which help belongs to
+     * Creates new table model for read only table
+     * @param data Array with rows which will be displayed in table
+     * @param columns Columns of table
      */
-    public String getCommand();
+    public WindowUIReadOnlyTableModel (Object[][] data, Object[] columns)
+    {
+        super(data, columns);
+    }
     
     /**
-     * Gets text of help to the command
-     * @return Text of help to the command
+     * Creates new table model for read only table
      */
-    public String getHelp();
+    public WindowUIReadOnlyTableModel()
+    {
+        super();
+    }
     
-    /**
-     * Gets colour of command
-     * @return colour of command
-     */
-    public Color getColor();
+    @Override
+    public boolean isCellEditable(int row, int column)
+    {
+        return false;
+    }
 }

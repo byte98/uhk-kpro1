@@ -17,7 +17,6 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.help.Help;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

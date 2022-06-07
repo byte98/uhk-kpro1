@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,36 +17,36 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialog;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUIDistancesTableModel;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUIStationsTableModel;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.tables.WindowUIDistancesTableModel;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 /**
- * Class representing window with stations
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Class representing window with distances
+ * @author Jiri Skoda <skodaji1@uhk.cz>
  */
 public class WindowUIDistancesWindow extends WindowUIWindow
 {
@@ -319,22 +319,15 @@ public class WindowUIDistancesWindow extends WindowUIWindow
         this.saveChangesItem.setIcon(new ImageIcon(WindowUI.PATH + "/saveitem.png"));
         this.saveChangesItem.setText("Uložit změny");
         this.saveChangesItem.addActionListener((e) -> {
-            // TODO: This saving mechanics needs fixes
-            for (int r = 0; r < this.dataView.getModel().getRowCount(); r++)
+            Map<String, Map<String, Integer>> data = this.getTableData();
+            for (String from: data.keySet())
             {
-                for(int c = 1; c < this.dataView.getModel().getColumnCount(); c++)
+                for (String to: data.get(from).keySet())
                 {
-                    Station from = Stations.GetInstance().GetStation(this.dataView.getColumnName(c));
-                    Station to   = Stations.GetInstance().GetStation((String)this.dataView.getModel().getValueAt(r, 0));
-                    int distance = -1;
-                    try
-                    {
-                        Integer.parseInt((String)this.dataView.getModel().getValueAt(r, c).toString());
-                    }
-                    catch(Exception ex){}
-                    if (distance < 0)
-                        distance = 0;
-                    Distances.GetInstance().SetDistance(from, to, distance);
+                    Distances.GetInstance().SetDistance(
+                            Stations.GetInstance().GetStation(from),
+                            Stations.GetInstance().GetStation(to),
+                            data.get(from).get(to));
                 }
             }
             this.setState("Změny úspěšně uloženy");
@@ -344,5 +337,38 @@ public class WindowUIDistancesWindow extends WindowUIWindow
         
         super.setSize(800, 600);
         
+    }
+    
+    /**
+     * Gets data stored in table
+     * @return Map with stations abbreavations and distances
+     */
+    private Map<String, Map<String, Integer>> getTableData()
+    {
+        Map<String, Map<String, Integer>> reti = new HashMap<>();
+        for (int r = 0; r < this.dataView.getRowCount(); r++)
+        {
+            reti.put(this.dataView.getModel().getValueAt(r, 0).toString(), new HashMap<>());
+            Map<String, Integer> line = new HashMap<>();
+            for (int c = 1; c < this.dataView.getColumnCount(); c++)
+            {
+                int distance = -1;
+                try
+                {
+                    distance = Integer.parseInt(this.dataView.getModel().getValueAt(r, c).toString());
+                }
+                catch (Exception ex){
+                    distance = 0;
+                    System.out.println(String.format("[!] ERROR: from %s to %s = %s",
+                            this.dataView.getModel().getValueAt(r, 0),
+                            this.dataView.getModel().getColumnName(c),
+                            this.dataView.getModel().getValueAt(r, c)));
+                }
+                System.out.println(String.format("[r: %d; c: %d] -> %d", r, c, distance));
+                line.put(this.dataView.getColumnName(c), distance);
+            }
+            reti.put(this.dataView.getModel().getValueAt(r, 0).toString(), line);
+        }
+        return reti;
     }
 }

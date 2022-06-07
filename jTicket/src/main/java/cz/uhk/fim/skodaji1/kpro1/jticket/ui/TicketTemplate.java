@@ -237,7 +237,6 @@ public class TicketTemplate
         }
         
         this.fields.forEach(field -> {
-            System.out.println(field.getContent());
             this.writeTextToPage(
                     doc,
                     page,
@@ -275,56 +274,64 @@ public class TicketTemplate
      */
     private void writeTextToPage(PDDocument document, PDPage page, String text, PDType1Font fontFamily, int fontSize, int top, int left, int maxLength)
     {
-        if (text.length() > maxLength)
+        System.out.println(text);
+        if (text != null)
         {
-            // If longer than expected line length, split to multiline
-            String parts[] = text.split(" ");
-            List<String> newLines = new ArrayList<>();
-            String line = new String();
-            for (String part: parts)
+            if (text.length() > maxLength)
             {
-                if (part.length() > 1)
+                // If longer than expected line length, split to multiline
+                String parts[] = text.split(" ");
+                List<String> newLines = new ArrayList<>();
+                String line = new String();
+                for (String part: parts)
                 {
-                    if (line.length() + part.length() > maxLength)
+                    if (part.length() > 1)
                     {
-                        newLines.add(line);
-                        line = part;
+                        if (line.length() + part.length() > maxLength)
+                        {
+                            newLines.add(line);
+                            line = part;
+                        }
+                        else
+                        {
+                            line += part;
+                        }
                     }
                     else
                     {
                         line += part;
                     }
+                    line += " ";
                 }
-                else
+                newLines.add(line);
+                ListIterator<String> it = newLines.listIterator();
+                int idx = 0;
+                while (it.hasNext())
                 {
-                    line += part;
+                    this.writeTextToPage(document, page, it.next(), fontFamily, fontSize, top - (idx * fontSize), left, Integer.MAX_VALUE);
+                    idx++;
                 }
-                line += " ";
             }
-            newLines.add(line);
-            ListIterator<String> it = newLines.listIterator();
-            int idx = 0;
-            while (it.hasNext())
+            else
             {
-                this.writeTextToPage(document, page, it.next(), fontFamily, fontSize, top - (idx * fontSize), left, Integer.MAX_VALUE);
-                idx++;
-            }
-        }
-        else
-        {
-            try
-            {
-                PDPageContentStream stream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND,true,true);        
-                stream.setFont(fontFamily, fontSize);
-                stream.beginText();
-                stream.newLineAtOffset(left, top);
-                stream.showText(text);
-                stream.endText();
-                stream.close();
-            }
-            catch (IOException ex)
-            {
-                Logger.getLogger(TicketTemplate.class.getName()).log(Level.SEVERE, null, ex);
+                try
+                {
+                    PDPageContentStream stream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND,true,true);        
+                    stream.setFont(fontFamily, fontSize);
+                    stream.beginText();
+                    stream.newLineAtOffset(left, top);
+                    try
+                    {
+                    stream.showText(text);
+                    }
+                    catch (Exception ex){}
+                    stream.endText();
+                    stream.close();
+                }
+                catch (IOException ex)
+                {
+                    Logger.getLogger(TicketTemplate.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
