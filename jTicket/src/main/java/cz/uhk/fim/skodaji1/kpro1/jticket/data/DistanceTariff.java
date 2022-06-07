@@ -201,4 +201,13 @@ public class DistanceTariff extends Tariff {
         }
         return reti;
     }
+    
+    /**
+     * Gets price list of tariff
+     * @return Price list of tariff
+     */
+    public Map<Integer, Integer> getPriceList()
+    {
+        return new HashMap<>(this.priceList);
+    }
 }

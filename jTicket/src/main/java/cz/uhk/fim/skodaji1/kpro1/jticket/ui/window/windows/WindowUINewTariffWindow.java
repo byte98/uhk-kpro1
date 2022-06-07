@@ -18,7 +18,6 @@
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.DistanceTariff;
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.TariffType;
@@ -112,7 +111,7 @@ public class WindowUINewTariffWindow extends JDialog
         super.setIconImage(new ImageIcon(WindowUI.PATH + "/newitem.png").getImage());
         super.setModal(true);
         this.initializeComponents();
-        super.setSize(new Dimension(600, 400));
+        super.setSize(new Dimension(650, 450));
         super.getInsets().set(20, 20, 20, 20);
         super.setResizable(false);
         super.setLocation(

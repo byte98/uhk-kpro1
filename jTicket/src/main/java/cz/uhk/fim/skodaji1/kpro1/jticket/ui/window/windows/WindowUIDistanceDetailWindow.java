@@ -17,11 +17,11 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialog;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialog;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

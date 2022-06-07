@@ -17,11 +17,11 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialog;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialog;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

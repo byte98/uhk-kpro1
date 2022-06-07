@@ -18,8 +18,8 @@
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window;
 
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIExceptionDialog;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.WindowUIMainWindow;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIExceptionDialog;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;

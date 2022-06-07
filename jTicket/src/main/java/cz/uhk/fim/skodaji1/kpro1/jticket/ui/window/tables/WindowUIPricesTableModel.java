@@ -20,7 +20,6 @@ package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.tables;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Distances;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Station;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations;
-import cz.uhk.fim.skodaji1.kpro1.jticket.data.TariffType;
 import javax.swing.table.DefaultTableModel;
 
 /**
