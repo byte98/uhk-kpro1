@@ -47,7 +47,7 @@ public class Configuration
     /**
      * Path to file which contains configuration
      */
-    private String filePath;
+    private final String filePath;
     
     /**
      * Path to file which contains background of tickets

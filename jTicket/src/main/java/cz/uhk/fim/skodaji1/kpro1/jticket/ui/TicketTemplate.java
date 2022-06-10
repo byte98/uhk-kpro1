@@ -17,6 +17,7 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -274,7 +275,6 @@ public class TicketTemplate
      */
     private void writeTextToPage(PDDocument document, PDPage page, String text, PDType1Font fontFamily, int fontSize, int top, int left, int maxLength)
     {
-        System.out.println(text);
         if (text != null)
         {
             if (text.length() > maxLength)

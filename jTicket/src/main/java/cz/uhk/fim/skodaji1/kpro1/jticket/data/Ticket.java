@@ -60,13 +60,13 @@ public class Ticket
     private int ticketNr;
     
     /**
-     * Creates new ticket
+     * Initializes ticket
      */
-    public void Ticket()
+    public void initializeTicket()
     {
         Configuration config = Configuration.getInstance(jTicket.CONFIG_FILE);
         this.template = new TicketTemplate(config.ticketBackground, config.ticketTemplate);
-        config.ticketNr = config.ticketNr + 1;
+        config.ticketNr++;
         this.ticketNr = config.ticketNr;
         config.saveToFile();
         this.id = String.format("JT%012d", this.ticketNr);
@@ -130,7 +130,7 @@ public class Ticket
             if (this.tariff.getType() == TariffType.ZONE)
             {
                 ZoneTariff zt = (ZoneTariff) this.tariff;
-                reti.append("(počet zón: ");
+                reti.append(" (pocet zon: ");
                 reti.append(Math.abs(zt.getZone(this.from) - zt.getZone(this.to)));
                 reti.append(")");
             }
@@ -282,12 +282,40 @@ public class Ticket
         this.template.setValue("to", this.to.getName());        
         this.template.setValue("validity", this.getValidityText());
         this.template.setValue("distance", this.getDistanceText());
-        double price = this.getPrice();
-        this.template.setValue("price-wo-vat", String.format("%.2f", (price - (price * (cfg.VAT / 100)))));
-        this.template.setValue("vat-price", String.format("%.2f", price * (cfg.VAT / 100)));
-        this.template.setValue("price", String.format("%d", (long)price));
+        this.template.setValue("price-wo-vat", String.format("%.2f CZK", this.getPriceWoVAT()));
+        this.template.setValue("vat-price", String.format("%.2f CZK", this.getVATValue()));
+        this.template.setValue("vat", String.format("%.2f %%", this.getVATRate()));
+        this.template.setValue("price", String.format("%d", (long)this.getPrice()));
         
-        this.template.generatePDF(cfg.outputDirectory + output);
+        this.template.generatePDF(output);
+    }
+    
+    /**
+     * Gets rate of VAT
+     * @return Actual rate of VAT (in percents)
+     */
+    public double getVATRate()
+    {
+        Configuration cfg = Configuration.getInstance(jTicket.CONFIG_FILE);
+        return cfg.VAT;
+    }
+    
+    /**
+     * Gets value of VAT from ticket
+     * @return Value of VAT from ticket
+     */
+    public double getVATValue()
+    {
+        return ((double)this.getPrice() * (this.getVATRate() / 100));
+    }
+    
+    /**
+     * Gets price without VAT
+     * @return Price without VAT
+     */
+    public double getPriceWoVAT()
+    {
+        return ((double)this.getPrice() - ((double)this.getPrice() * (this.getVATRate() / 100)));
     }
 }
         

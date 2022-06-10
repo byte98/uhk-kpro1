@@ -197,6 +197,7 @@ public class TextUITicket extends TextUIState{
                         {
                             this.tariff = t;
                             this.ticket = new Ticket();
+                            this.ticket.initializeTicket();
                             this.ticket.setTariff(t);
                             this.commandPrefix = "/ticket:from";
                             this.progress++;
