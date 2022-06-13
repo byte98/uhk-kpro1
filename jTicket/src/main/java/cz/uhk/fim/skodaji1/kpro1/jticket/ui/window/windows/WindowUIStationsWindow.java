@@ -199,7 +199,7 @@ public class WindowUIStationsWindow extends WindowUIWindow
         // Open explorer item
         this.openExplorer = new JMenuItem();
         this.openExplorer.setText("Otevřít v prohlížeči souborů");
-        this.openExplorer.setIcon(new ImageIcon(WindowUI.PATH + "/explorer.png"));
+        this.openExplorer.setIcon(new ImageIcon(WindowUI.UI_PATH + "/explorer.png"));
         this.openExplorer.addActionListener((ActionEvent e) -> {
             try {        
                 Desktop.getDesktop().open(new File("./resources/data/"));
@@ -211,13 +211,13 @@ public class WindowUIStationsWindow extends WindowUIWindow
         
         // Data menu
         this.dataMenu = new JMenu();
-        this.dataMenu.setIcon(new ImageIcon(WindowUI.PATH + "/data.png"));
+        this.dataMenu.setIcon(new ImageIcon(WindowUI.UI_PATH + "/data.png"));
         this.dataMenu.setText("Data");
         this.topMenu.add(this.dataMenu);
         
         // Add station item
         this.addStationItem = new JMenuItem();
-        this.addStationItem.setIcon(new ImageIcon(WindowUI.PATH + "/newitem.png"));
+        this.addStationItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/newitem.png"));
         this.addStationItem.setText("Přidat stanici");
         this.addStationItem.addActionListener((ActionEvent e) -> {
             WindowUINewStationWindow dialog = new WindowUINewStationWindow();
@@ -238,7 +238,7 @@ public class WindowUIStationsWindow extends WindowUIWindow
         
         // Delete station item
         this.deleteStationItem = new JMenuItem();
-        this.deleteStationItem.setIcon(new ImageIcon(WindowUI.PATH + "/deleteitem.png"));
+        this.deleteStationItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/deleteitem.png"));
         this.deleteStationItem.setText("Smazat vybrané stanice");
         this.dataMenu.add(this.deleteStationItem);
         this.deleteStationItem.addActionListener((ActionListener) (ActionEvent e) -> {
@@ -276,7 +276,7 @@ public class WindowUIStationsWindow extends WindowUIWindow
         
         // Save changes item
         this.saveChangesItem = new JMenuItem();
-        this.saveChangesItem.setIcon(new ImageIcon(WindowUI.PATH + "/saveitem.png"));
+        this.saveChangesItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/saveitem.png"));
         this.saveChangesItem.setText("Uložit změny");
         this.saveChangesItem.addActionListener((e) -> {
             // First, delete stations

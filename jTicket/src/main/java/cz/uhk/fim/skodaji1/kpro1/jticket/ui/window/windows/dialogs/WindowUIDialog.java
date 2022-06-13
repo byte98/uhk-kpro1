@@ -135,24 +135,24 @@ public class WindowUIDialog extends JDialog
         switch(this.type)
         {
             case INFO:
-                this.audioFile = WindowUI.PATH + "/DING.WAV";
-                this.iconFile = WindowUI.PATH + "/info-s.png";
-                this.imageFile = WindowUI.PATH + "/info.png";
+                this.audioFile = WindowUI.UI_PATH + "/DING.WAV";
+                this.iconFile = WindowUI.UI_PATH + "/info-s.png";
+                this.imageFile = WindowUI.UI_PATH + "/info.png";
                 break;
             case QUESTION:
-                    this.audioFile = WindowUI.PATH + "/DING.WAV";
-                    this.iconFile = WindowUI.PATH + "/question-s.png";
-                    this.imageFile = WindowUI.PATH + "/question.png";
+                    this.audioFile = WindowUI.UI_PATH + "/DING.WAV";
+                    this.iconFile = WindowUI.UI_PATH + "/question-s.png";
+                    this.imageFile = WindowUI.UI_PATH + "/question.png";
                     break;
             case WARNING:
-                    this.audioFile = WindowUI.PATH + "/CHORD.WAV";
-                    this.iconFile = WindowUI.PATH + "/warning-s.png";
-                    this.imageFile = WindowUI.PATH + "/warning.png";
+                    this.audioFile = WindowUI.UI_PATH + "/CHORD.WAV";
+                    this.iconFile = WindowUI.UI_PATH + "/warning-s.png";
+                    this.imageFile = WindowUI.UI_PATH + "/warning.png";
                     break;
             case ERROR:
-                    this.audioFile = WindowUI.PATH + "/CHORD.WAV";
-                    this.iconFile = WindowUI.PATH + "/error-s.png";
-                    this.imageFile = WindowUI.PATH + "/error.png";
+                    this.audioFile = WindowUI.UI_PATH + "/CHORD.WAV";
+                    this.iconFile = WindowUI.UI_PATH + "/error-s.png";
+                    this.imageFile = WindowUI.UI_PATH + "/error.png";
                     break;
         }
     }

@@ -230,7 +230,7 @@ public class WindowUIDistancesWindow extends WindowUIWindow
         // Open explorer item
         this.openExplorer = new JMenuItem();
         this.openExplorer.setText("Otevřít v prohlížeči souborů");
-        this.openExplorer.setIcon(new ImageIcon(WindowUI.PATH + "/explorer.png"));
+        this.openExplorer.setIcon(new ImageIcon(WindowUI.UI_PATH + "/explorer.png"));
         this.openExplorer.addActionListener((ActionEvent e) -> {
             try {        
                 Desktop.getDesktop().open(new File("./resources/data/"));
@@ -242,13 +242,13 @@ public class WindowUIDistancesWindow extends WindowUIWindow
         
         // Data menu
         this.dataMenu = new JMenu();
-        this.dataMenu.setIcon(new ImageIcon(WindowUI.PATH + "/data.png"));
+        this.dataMenu.setIcon(new ImageIcon(WindowUI.UI_PATH + "/data.png"));
         this.dataMenu.setText("Data");
         this.topMenu.add(this.dataMenu);
         
         // Detail item
         this.detailItem = new JMenuItem();
-        this.detailItem.setIcon(new ImageIcon(WindowUI.PATH + "/detail-s.png"));
+        this.detailItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/detail-s.png"));
         this.detailItem.setText("Detail");
         this.detailItem.addActionListener((e) -> {
             if (this.dataView.getSelectedRowCount() > 0)
@@ -316,7 +316,7 @@ public class WindowUIDistancesWindow extends WindowUIWindow
         
         // Save changes item
         this.saveChangesItem = new JMenuItem();
-        this.saveChangesItem.setIcon(new ImageIcon(WindowUI.PATH + "/saveitem.png"));
+        this.saveChangesItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/saveitem.png"));
         this.saveChangesItem.setText("Uložit změny");
         this.saveChangesItem.addActionListener((e) -> {
             Map<String, Map<String, Integer>> data = this.getTableData();

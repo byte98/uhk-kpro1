@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +69,11 @@ public class Configuration
      * Mode of user interface
      */
     public UIMode uiMode;
+    
+    /**
+     * Name of used user interface theme
+     */
+    public String uiTheme;
     
     /**
      * Count of tickets issued
@@ -145,12 +151,26 @@ public class Configuration
             toSave.add("TICKET_ISSUED");
             toSave.add("TICKET_VALIDITY");
             toSave.add("VAT");
+            toSave.add("UI_THEME");
             for(String line: oldLines)
             {
                 boolean added = false;
-                // Check, if is not already saved
-                for (String val: toSave)
+                if (line.startsWith("# ||                Last modification")) // Set last modification of file
                 {
+                    LocalDateTime now = LocalDateTime.now();
+                    newLines.add(String.format(
+                            "# ||                Last modification: %04d/%02d/%02d %02d:%02d             ||",
+                            now.getYear(),
+                            now.getMonthValue(),
+                            now.getDayOfMonth(),
+                            now.getHour(),
+                            now.getMinute()
+                            ));
+                    added = true;
+                }
+                for (String val: toSave) // Check, if is not already saved
+                {
+                    
                     if (line.toUpperCase().startsWith(val))
                     {
                         StringBuilder sb = new StringBuilder();
@@ -164,11 +184,13 @@ public class Configuration
                             case "TICKET_ISSUED"    : sb.append(this.ticketNr);         break;
                             case "TICKET_VALIDITY"  : sb.append(this.ticketValidity);   break;
                             case "VAT"              : sb.append(this.VAT);              break;
+                            case "UI_THEME"         : sb.append(this.uiTheme);          break;
                             case "UI_MODE"          : switch(this.uiMode)
                             {
                                 case TEXT: sb.append("TEXT");         break;
                                 case GRAPHICS: sb.append("GRAPHICS"); break;
                             }
+                            
                         }
                         newLines.add(sb.toString());
                         added = true;
@@ -196,6 +218,7 @@ public class Configuration
                         case "TICKET_ISSUED"    : sb.append(this.ticketNr);         break;
                         case "TICKET_VALIDITY"  : sb.append(this.ticketValidity);   break;
                         case "VAT"              : sb.append(this.VAT);              break;
+                        case "UI_THEME"         : sb.append(this.uiTheme);          break;
                         case "UI_MODE"          : switch(this.uiMode)
                         {
                             case TEXT: sb.append("TEXT");         break;
@@ -256,6 +279,7 @@ public class Configuration
         {
             this.uiMode = UIMode.TEXT;
         }
+        this.uiTheme = fileContent.get("UI_THEME");
     }
     
     /**

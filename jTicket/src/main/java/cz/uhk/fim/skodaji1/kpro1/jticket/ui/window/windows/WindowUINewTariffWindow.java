@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,12 +17,15 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.data.Configuration;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.DistanceTariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Stations;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.Tariff;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.TariffType;
 import cz.uhk.fim.skodaji1.kpro1.jticket.data.ZoneTariff;
+import cz.uhk.fim.skodaji1.kpro1.jticket.jTicket;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
+import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUITheme;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.tables.WindowUIPricesTableModel;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.tables.WindowUIZonesTableModel;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIButtonType;
@@ -30,7 +33,6 @@ import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialo
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIDialogType;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -53,7 +55,7 @@ import javax.swing.ListSelectionModel;
 
 /**
  * Class representing new tariff window
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz.cz>
  */
 public class WindowUINewTariffWindow extends JDialog
 {
@@ -108,7 +110,7 @@ public class WindowUINewTariffWindow extends JDialog
     public WindowUINewTariffWindow()
     {
         super.setTitle("Průvodce vytvořením nového tarifu");
-        super.setIconImage(new ImageIcon(WindowUI.PATH + "/newitem.png").getImage());
+        super.setIconImage(new ImageIcon(WindowUI.UI_PATH + "/newitem.png").getImage());
         super.setModal(true);
         this.initializeComponents();
         super.setSize(new Dimension(650, 450));
@@ -154,9 +156,9 @@ public class WindowUINewTariffWindow extends JDialog
         this.stage1.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
         //<editor-fold defaultstate="collapsed" desc="Image of stage">
         JLabel stage1Img = new JLabel();
-        stage1Img.setIcon(new ImageIcon(WindowUI.PATH + "/tariffwiz-1.png"));
+        stage1Img.setIcon(new ImageIcon(WindowUI.UI_PATH + "/tariffwiz-1.png"));
         stage1Img.setSize(100, 300);
-        stage1Img.setBackground(new Color(4, 110, 114));
+        stage1Img.setBackground(WindowUITheme.getTheme(Configuration.getInstance(jTicket.CONFIG_FILE).uiTheme).getTariffWizardColour());
         stage1Img.setOpaque(true);
         stage1Img.setBorder(BorderFactory.createLoweredBevelBorder());
         this.stage1.add(stage1Img, BorderLayout.WEST);
@@ -260,9 +262,9 @@ public class WindowUINewTariffWindow extends JDialog
         
         //<editor-fold defaultstate="collapsed" desc="Image of stage">
         JLabel stage2Img = new JLabel();
-        stage2Img.setIcon(new ImageIcon(WindowUI.PATH + "/tariffwiz-2.png"));
+        stage2Img.setIcon(new ImageIcon(WindowUI.UI_PATH + "/tariffwiz-2.png"));
         stage2Img.setSize(100, 300);
-        stage2Img.setBackground(new Color(4, 110, 114));
+        stage2Img.setBackground(WindowUITheme.getTheme(Configuration.getInstance(jTicket.CONFIG_FILE).uiTheme).getTariffWizardColour());
         stage2Img.setOpaque(true);
         stage2Img.setBorder(BorderFactory.createLoweredBevelBorder());
         this.stage2.add(stage2Img, BorderLayout.WEST);

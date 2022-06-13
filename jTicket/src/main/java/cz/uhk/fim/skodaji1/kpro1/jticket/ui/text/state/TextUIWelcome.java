@@ -17,6 +17,9 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.state;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.data.Configuration;
+import cz.uhk.fim.skodaji1.kpro1.jticket.data.UIMode;
+import cz.uhk.fim.skodaji1.kpro1.jticket.jTicket;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.ITextUIHelp;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIController;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.text.TextUIHelpFactory;
@@ -41,10 +44,11 @@ public class TextUIWelcome extends TextUIState
         this.screen = TextUIScreenFactory.createHTMLScreen("welcome", "welcome.html");
         this.name = "welcome";
         
-        this.helps = new ITextUIHelp[3];
+        this.helps = new ITextUIHelp[4];
         this.helps[0] = TextUIHelpFactory.createSimpleHelp("ticket", Color.YELLOW, "Rezim prodeje");
         this.helps[1] = TextUIHelpFactory.createSimpleHelp("data", Color.YELLOW, "Rezim upravy dat");
-        this.helps[2] = TextUIHelpFactory.createSimpleHelp("exit", Color.MAGENTA, "Ukoncit program");
+        this.helps[2] = TextUIHelpFactory.createSimpleHelp("graphics", Color.YELLOW, "Zmeni rezim vzhledu na graficky");
+        this.helps[3] = TextUIHelpFactory.createSimpleHelp("exit", Color.MAGENTA, "Ukoncit program");
     }
     
     
@@ -70,6 +74,11 @@ public class TextUIWelcome extends TextUIState
                     this.controller.changeState("ticket");
                 }             
                 break;
+            case "graphics": 
+                Configuration config = Configuration.getInstance(jTicket.CONFIG_FILE);
+                config.uiMode = UIMode.GRAPHICS;
+                config.saveToFile();
+                this.controller.showSucess("Nastaveni grafiky upsesne zmeneno. Pri pristim spusteni programu bude pouzito graficke prostredi.");
         }
     }
     

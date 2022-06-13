@@ -17,6 +17,8 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui.window;
 
+import cz.uhk.fim.skodaji1.kpro1.jticket.data.Configuration;
+import cz.uhk.fim.skodaji1.kpro1.jticket.jTicket;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.IUserInterface;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.WindowUIMainWindow;
 import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.windows.dialogs.WindowUIExceptionDialog;
@@ -36,18 +38,23 @@ public class WindowUI implements IUserInterface
      * Main window of program
      */
     private WindowUIMainWindow mainWindow;
-    
+        
     /**
-     * Path to resources of WindowUI
+     * Path to user interface theme resources
      */
-    public static final String PATH = "resources/windowui";
+    public static String UI_PATH;
     
     @Override
     public void prepare()
     { 
+        Configuration config = Configuration.getInstance(jTicket.CONFIG_FILE);
+        WindowUITheme theme = WindowUITheme.getTheme(config.uiTheme);
+        if (theme == null)
+            theme = WindowUITheme.THEMES.get(0);
+        WindowUI.UI_PATH = theme.getUiPath();
         try
         {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+            UIManager.setLookAndFeel(theme.getLookAndFeel());
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex)
         {

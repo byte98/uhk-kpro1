@@ -78,7 +78,7 @@ public class WindowUINewStationWindow extends JDialog
     public WindowUINewStationWindow()
     {
         super();
-        super.setIconImage(new ImageIcon(WindowUI.PATH + "/newitem.png").getImage());
+        super.setIconImage(new ImageIcon(WindowUI.UI_PATH + "/newitem.png").getImage());
         super.setTitle("jTicket - Nová stanice");
         super.setModal(true);
         this.initializeComponents();
@@ -132,7 +132,7 @@ public class WindowUINewStationWindow extends JDialog
         
         // OK button
         this.buttonOK = new JButton();
-        this.buttonOK.setIcon(new ImageIcon(WindowUI.PATH + "/ok.png"));
+        this.buttonOK.setIcon(new ImageIcon(WindowUI.UI_PATH + "/ok.png"));
         this.buttonOK.setText("Budiž");
         this.buttonOK.addActionListener((ActionEvent e) -> {
             if (nameTF.getText().trim().length() > 0 &&
@@ -146,7 +146,7 @@ public class WindowUINewStationWindow extends JDialog
         
         // Cancel button
         this.buttonCancel = new JButton();
-        this.buttonCancel.setIcon(new ImageIcon(WindowUI.PATH + "/close.png"));
+        this.buttonCancel.setIcon(new ImageIcon(WindowUI.UI_PATH + "/close.png"));
         this.buttonCancel.setText("Zrušit");
         this.buttonCancel.addActionListener((ActionEvent e) -> {
             okClicked = false;

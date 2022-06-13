@@ -204,7 +204,7 @@ public class WindowUITariffsWindow extends WindowUIWindow
         // Open explorer item
         this.openExplorer = new JMenuItem();
         this.openExplorer.setText("Otevřít v prohlížeči souborů");
-        this.openExplorer.setIcon(new ImageIcon(WindowUI.PATH + "/explorer.png"));
+        this.openExplorer.setIcon(new ImageIcon(WindowUI.UI_PATH + "/explorer.png"));
         this.openExplorer.addActionListener((ActionEvent e) -> {
             try {        
                 Desktop.getDesktop().open(new File("./resources/data/"));
@@ -216,13 +216,13 @@ public class WindowUITariffsWindow extends WindowUIWindow
         
         // Data menu
         this.dataMenu = new JMenu();
-        this.dataMenu.setIcon(new ImageIcon(WindowUI.PATH + "/data.png"));
+        this.dataMenu.setIcon(new ImageIcon(WindowUI.UI_PATH + "/data.png"));
         this.dataMenu.setText("Data");
         this.topMenu.add(this.dataMenu);
         
         // Detail item
         this.detailItem = new JMenuItem();
-        this.detailItem.setIcon(new ImageIcon(WindowUI.PATH + "/detail-s.png"));
+        this.detailItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/detail-s.png"));
         this.detailItem.setText("Detail tarifu");
         this.detailItem.addActionListener((e) -> {
             if (this.dataView.getSelectedRowCount() > 0 && this.getSelectedTariff() != null)
@@ -246,7 +246,7 @@ public class WindowUITariffsWindow extends WindowUIWindow
         
         // New tariff item
         this.newTariffItem = new JMenuItem();
-        this.newTariffItem.setIcon(new ImageIcon(WindowUI.PATH + "/newitem.png"));
+        this.newTariffItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/newitem.png"));
         this.newTariffItem.setText("Vytvořit nový tarif");
         this.newTariffItem.addActionListener((e) -> {
             WindowUINewTariffWindow newTariffWindow = new WindowUINewTariffWindow();
@@ -263,7 +263,7 @@ public class WindowUITariffsWindow extends WindowUIWindow
         
         // Remove item
         this.removeItem = new JMenuItem();
-        this.removeItem.setIcon(new ImageIcon(WindowUI.PATH + "/deleteitem.png"));
+        this.removeItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/deleteitem.png"));
         this.removeItem.setText("Odebrat vybraný tarif");
         this.removeItem.addActionListener((e) -> {
             if (this.dataView.getSelectedRowCount() > 0)
@@ -299,7 +299,7 @@ public class WindowUITariffsWindow extends WindowUIWindow
         
         // Save changes item
         this.saveChangesItem = new JMenuItem();
-        this.saveChangesItem.setIcon(new ImageIcon(WindowUI.PATH + "/saveitem.png"));
+        this.saveChangesItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/saveitem.png"));
         this.saveChangesItem.setText("Uložit změny");
         this.saveChangesItem.addActionListener((e) -> {
             for (Tariff t: this.toAdd)

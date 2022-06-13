@@ -53,6 +53,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -102,6 +103,16 @@ public class WindowUIMainWindow extends WindowUIWindow
      * Item in menu which opens tariffs settings window
      */
     private JMenuItem itemTariffs;
+    
+    /**
+     * Item which opens data directory in file explorer
+     */
+    private JMenuItem openExplorer;
+    
+    /**
+     * Item which opens 'about' window
+     */
+    private JMenuItem aboutItem;
     
     /**
      * Window with stations
@@ -216,18 +227,22 @@ public class WindowUIMainWindow extends WindowUIWindow
         // Settings of program
         this.itemSettings = new JMenuItem();
         this.itemSettings.setText("Nastavení");
-        this.itemSettings.setIcon(new ImageIcon(WindowUI.PATH + "/settings.png"));
+        this.itemSettings.setIcon(new ImageIcon(WindowUI.UI_PATH + "/settings.png"));
+        this.itemSettings.addActionListener((e) -> {
+            WindowUISettingsWindow settingsWindow = new WindowUISettingsWindow(Configuration.getInstance(jTicket.CONFIG_FILE));
+            settingsWindow.setVisible(true);
+        });
         this.fileMenu.add(this.itemSettings, 0);
                 
         // Data menu
         this.dataMenu = new JMenu();
         this.dataMenu.setText("Data");
-        this.dataMenu.setIcon(new ImageIcon(WindowUI.PATH + "/data.png"));
+        this.dataMenu.setIcon(new ImageIcon(WindowUI.UI_PATH + "/data.png"));
         
         // Stations menu item
         this.itemStations = new JMenuItem();
         this.itemStations.setText("Stanice");
-        this.itemStations.setIcon(new ImageIcon(WindowUI.PATH + "/dataitem.png"));
+        this.itemStations.setIcon(new ImageIcon(WindowUI.UI_PATH + "/dataitem.png"));
         this.itemStations.addActionListener((ActionEvent e) -> {
             stationsWindow.setData(Stations.GetInstance().GetAllStations());
             stationsWindow.setVisible(true);
@@ -248,7 +263,7 @@ public class WindowUIMainWindow extends WindowUIWindow
         // Distances menu item
         this.itemDistances = new JMenuItem();
         this.itemDistances.setText("Vzdálenosti");
-        this.itemDistances.setIcon(new ImageIcon(WindowUI.PATH + "/dataitem.png"));
+        this.itemDistances.setIcon(new ImageIcon(WindowUI.UI_PATH + "/dataitem.png"));
         this.itemDistances.addActionListener((e) -> {
             WindowUIDistancesWindow distancesWindow = new WindowUIDistancesWindow();
             distancesWindow.addWindowListener(new WindowAdapter(){
@@ -266,7 +281,7 @@ public class WindowUIMainWindow extends WindowUIWindow
         // Tariffs menu item
         this.itemTariffs = new JMenuItem();
         this.itemTariffs.setText("Tarify");
-        this.itemTariffs.setIcon(new ImageIcon(WindowUI.PATH + "/dataitem.png"));
+        this.itemTariffs.setIcon(new ImageIcon(WindowUI.UI_PATH + "/dataitem.png"));
         this.itemTariffs.addActionListener((e) -> {
             WindowUITariffsWindow tariffsWindow = new WindowUITariffsWindow();
             tariffsWindow.addWindowListener(new WindowAdapter(){
@@ -280,6 +295,30 @@ public class WindowUIMainWindow extends WindowUIWindow
             tariffsWindow.setVisible(true);            
         });
         this.dataMenu.add(this.itemTariffs);
+        
+        // Open explorer item
+        this.openExplorer = new JMenuItem();
+        this.openExplorer.setText("Otevřít v prohlížeči souborů");
+        this.openExplorer.setIcon(new ImageIcon(WindowUI.UI_PATH + "/explorer.png"));
+        this.openExplorer.addActionListener((ActionEvent e) -> {
+            Configuration cfg = Configuration.getInstance(jTicket.CONFIG_FILE);
+            try {        
+                Desktop.getDesktop().open(new File(cfg.outputDirectory));
+            } catch (IOException ex) {
+                WindowUI.handleException(ex);
+            }
+        });
+        this.fileMenu.add(this.openExplorer, 0);
+        
+        // "About" item
+        this.aboutItem = new JMenuItem();
+        this.aboutItem.setText("O programu jTicket");
+        this.aboutItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/about-s.png"));
+        this.aboutItem.addActionListener((e) -> {
+            JDialog aboutWindow = WindowUIAboutWindow.getWindow();
+            aboutWindow.setVisible(true);
+        });
+        this.fileMenu.add(this.aboutItem, this.fileMenu.getItemCount() - 1);
         
         this.topMenu.add(this.dataMenu);
     }
@@ -486,7 +525,7 @@ public class WindowUIMainWindow extends WindowUIWindow
             //<editor-fold defaultstate="collapsed" desc="Cancel button">
         this.buttonCancel = new JButton();
         this.buttonCancel.setFont(buttonFont);
-        this.buttonCancel.setIcon(new ImageIcon(WindowUI.PATH + "/cancel.png"));
+        this.buttonCancel.setIcon(new ImageIcon(WindowUI.UI_PATH + "/cancel.png"));
         this.buttonCancel.setText("Zrušit");
         this.buttonCancel.addActionListener((e) -> {
             this.TICKET_PATH = null;
@@ -509,7 +548,7 @@ public class WindowUIMainWindow extends WindowUIWindow
             //<editor-fold defaultstate="collapsed" desc="Print button">
         JButton buttonPrint = new JButton();
         buttonPrint.setFont(buttonFont);
-        buttonPrint.setIcon(new ImageIcon(WindowUI.PATH + "/print.png"));
+        buttonPrint.setIcon(new ImageIcon(WindowUI.UI_PATH + "/print.png"));
         buttonPrint.setText("Tisk");
         buttonPrint.addActionListener((e) -> {
             this.createTicketFile();
@@ -541,7 +580,7 @@ public class WindowUIMainWindow extends WindowUIWindow
             //<editor-fold defaultstate="collapsed" desc="Open file button">
         JButton buttonOpen = new JButton();
         buttonOpen.setFont(buttonFont);
-        buttonOpen.setIcon(new ImageIcon(WindowUI.PATH + "/open.png"));
+        buttonOpen.setIcon(new ImageIcon(WindowUI.UI_PATH + "/open.png"));
         buttonOpen.setText("Otevřít soubor");
         buttonOpen.addActionListener((e) -> {
             this.createTicketFile();
@@ -588,7 +627,7 @@ public class WindowUIMainWindow extends WindowUIWindow
             //<editor-fold defaultstate="collapsed" desc="Finish button">
         JButton buttonFinish = new JButton();
         buttonFinish.setFont(buttonFont);
-        buttonFinish.setIcon(new ImageIcon(WindowUI.PATH + "/finish.png"));
+        buttonFinish.setIcon(new ImageIcon(WindowUI.UI_PATH + "/finish.png"));
         buttonFinish.setText("Dokončit a pokračovat");
         buttonFinish.addActionListener((e) -> {
             this.createTicketFile();

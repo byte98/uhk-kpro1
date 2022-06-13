@@ -17,7 +17,6 @@
  */
 package cz.uhk.fim.skodaji1.kpro1.jticket.ui;
 
-import cz.uhk.fim.skodaji1.kpro1.jticket.ui.window.WindowUI;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

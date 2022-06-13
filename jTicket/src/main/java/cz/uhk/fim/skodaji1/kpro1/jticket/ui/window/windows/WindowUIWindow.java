@@ -129,7 +129,7 @@ public abstract class WindowUIWindow extends JFrame
     public WindowUIWindow(String title, String icon)
     {
         super(title);
-        super.setIconImage(new ImageIcon(WindowUI.PATH + "/" + icon).getImage());
+        super.setIconImage(new ImageIcon(WindowUI.UI_PATH + "/" + icon).getImage());
         super.setLayout(new BorderLayout());
         this.prepareTopMenu();
         this.prepareStatusBar();
@@ -168,14 +168,14 @@ public abstract class WindowUIWindow extends JFrame
         // File menu
         this.fileMenu = new JMenu();
         this.fileMenu.setText("Soubor");
-        this.fileMenu.setIcon(new ImageIcon(WindowUI.PATH + "/file.png"));
+        this.fileMenu.setIcon(new ImageIcon(WindowUI.UI_PATH + "/file.png"));
         this.fileMenu.setMnemonic(KeyEvent.VK_S);
         this.topMenu.add(this.fileMenu);
         
         // Close window
         this.closeItem = new JMenuItem();
         this.closeItem.setText("Zavřít");
-        this.closeItem.setIcon(new ImageIcon(WindowUI.PATH + "/close.png"));
+        this.closeItem.setIcon(new ImageIcon(WindowUI.UI_PATH + "/close.png"));
         this.closeItem.setMnemonic(KeyEvent.VK_Z);
         if (this.exitAction != null)
         {
@@ -216,7 +216,7 @@ public abstract class WindowUIWindow extends JFrame
         
         // Calendar icon
         this.calendarIcon = new JLabel();
-        this.calendarIcon.setIcon(new ImageIcon(WindowUI.PATH + "/calendar.png"));
+        this.calendarIcon.setIcon(new ImageIcon(WindowUI.UI_PATH + "/calendar.png"));
         this.datePanel.add(this.calendarIcon);
         
         // Date text
@@ -232,7 +232,7 @@ public abstract class WindowUIWindow extends JFrame
         
         // Clock icon
         this.clockIcon = new JLabel();
-        this.clockIcon.setIcon(new ImageIcon(WindowUI.PATH + "/clock.png"));
+        this.clockIcon.setIcon(new ImageIcon(WindowUI.UI_PATH + "/clock.png"));
         this.clockPanel.add(this.clockIcon);   
         
         // Time text

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Jiri Skoda <jiri.skoda@student.upce.cz>
+ * Copyright (C) 2022 Jiri Skoda <skodaji1@uhk.cz.cz>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ import javax.swing.ListSelectionModel;
 
 /**
  * Class representing window with tariff detail
- * @author Jiri Skoda <jiri.skoda@student.upce.cz>
+ * @author Jiri Skoda <skodaji1@uhk.cz.cz>
  */
 public class WindowUITariffDetailWindow extends JDialog
 {
@@ -67,7 +67,7 @@ public class WindowUITariffDetailWindow extends JDialog
         super.setModal(true);
         super.setSize(new Dimension(400, 500));
         super.setResizable(false);
-        super.setIconImage(new ImageIcon(WindowUI.PATH + "/detail-s.png").getImage());
+        super.setIconImage(new ImageIcon(WindowUI.UI_PATH + "/detail-s.png").getImage());
         super.setTitle("Detail tarifu");
         super.setLocation(
                 ((Toolkit.getDefaultToolkit().getScreenSize().width - super.getWidth()) / 2),

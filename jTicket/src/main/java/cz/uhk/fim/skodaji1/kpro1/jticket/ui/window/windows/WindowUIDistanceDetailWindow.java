@@ -80,7 +80,7 @@ public class WindowUIDistanceDetailWindow extends JDialog
 
         );
         super.setModal(true);
-        super.setIconImage(new ImageIcon(WindowUI.PATH + "/detail-s.png").getImage());
+        super.setIconImage(new ImageIcon(WindowUI.UI_PATH + "/detail-s.png").getImage());
         super.setTitle("Detail vzdálenosti mezi stanicemi");
     }
     
@@ -176,7 +176,7 @@ public class WindowUIDistanceDetailWindow extends JDialog
         buttonPanelConstraints.fill = GridBagConstraints.BOTH;
         //<editor-fold defaultstate="collapsed" desc="OK button">
         JButton okButton = new JButton();
-        okButton.setIcon(new ImageIcon(WindowUI.PATH + "/ok.png"));
+        okButton.setIcon(new ImageIcon(WindowUI.UI_PATH + "/ok.png"));
         okButton.setText("Budiž");
         okButton.addActionListener((e) -> {
             int entered = -1;
@@ -206,7 +206,7 @@ public class WindowUIDistanceDetailWindow extends JDialog
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Cancel button">
         JButton cancelButton = new JButton();
-        cancelButton.setIcon(new ImageIcon(WindowUI.PATH + "/close.png"));
+        cancelButton.setIcon(new ImageIcon(WindowUI.UI_PATH + "/close.png"));
         cancelButton.setText("Zrušit");
         cancelButton.addActionListener((e) -> {
             this.okClicked = false;
